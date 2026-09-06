@@ -1,0 +1,589 @@
+{
+  "meta": {
+    "studioName": "Triangle Room",
+    "tagline": "New company. Not new at this.",
+    "email": "connect@triangleroom.in",
+    "phone": "+91 98464 97008",
+    "location": "Trivandrum, Kerala",
+    "established": "2025"
+  },
+  "reel": {
+    "posterSrc": "/images/reel-poster.webp",
+    "videoSrc": ""
+  },
+  "reelStrip": {
+    "rowA": [
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728766147-35d14947.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728785851-5521e319.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728796434-34f149f1.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728804756-061bd071.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728812826-d933a086.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788728998524-6e9b2f2c.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729007948-348c99f4.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729016387-497eb556.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729029790-0eab3e09.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729062565-a155e46c.jpg"
+    ],
+    "rowB": [
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729499424-c1766224.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729500491-b6b60fa2.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729501955-a1080f69.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729502790-cdb7ee38.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729511235-4f557d62.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729512597-f756709c.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729513516-7c83eb8b.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729529467-4f30a1d3.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729530313-05f1a7c4.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729531141-6745f2fc.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729532018-2193cc88.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729532670-07fd9ab9.jpg",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729533219-447b09a8.jpg"
+    ],
+    "rowC": [
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729837838-bae05d49.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729838583-cbb5ff22.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729844385-efb181b2.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729853405-47791683.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729854138-8e91bde2.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729865168-556e6da1.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729873388-4b9fe03d.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729879746-bcba15b3.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729896519-901ff6b3.png",
+      "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/gallery/1788729897226-34ef46b6.png"
+    ]
+  },
+  "directors": [
+    {
+      "name": "Anu Kamala",
+      "role": "Story & Post",
+      "years": "18+",
+      "note": "Series editor, The Greatest Rivalry. Film editor, Tarini. Best Editor — Asian Television Awards 2019.",
+      "portrait": "https://randomuser.me/api/portraits/men/41.jpg"
+    },
+    {
+      "name": "Midhuna Pichy",
+      "role": "Production & Delivery",
+      "years": "11+",
+      "note": "Three seasons of Bigg Boss Malayalam. Episode, post and creative producer across seven international formats.",
+      "portrait": "https://randomuser.me/api/portraits/women/65.jpg"
+    },
+    {
+      "name": "Jibin Babu",
+      "role": "Development & Writing",
+      "years": "9+",
+      "note": "Writer-director. Pachamarakaikal — two Kerala State Awards. Music Mojo Season 7, Kappa TV.",
+      "portrait": "https://randomuser.me/api/portraits/men/47.jpg"
+    }
+  ],
+  "works": [
+    {
+      "title": "The Greatest Rivalry",
+      "client": "Netflix",
+      "genre": "Documentary Series",
+      "category": "Documentary",
+      "accent": "#1a3a20",
+      "srcs": []
+    },
+    {
+      "title": "Bigg Boss Malayalam",
+      "client": "Asianet",
+      "genre": "Reality Series",
+      "category": "Reality",
+      "accent": "#3a1a20",
+      "srcs": []
+    },
+    {
+      "title": "Pachamarakaikal",
+      "client": "",
+      "genre": "Film",
+      "category": "Film",
+      "accent": "#1a2a3a",
+      "award": "Two Kerala State Awards",
+      "srcs": []
+    },
+    {
+      "title": "Tarini",
+      "client": "National Geographic",
+      "genre": "Documentary Film",
+      "category": "Documentary",
+      "accent": "#8a7030",
+      "award": "Best Editor Nominee · 24th Asian Television Awards 2019",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Tarini/01.jpg"
+      ]
+    },
+    {
+      "title": "Fabulous Lives of Bollywood Wives",
+      "client": "Netflix",
+      "genre": "Reality Series",
+      "category": "Reality",
+      "accent": "#6a2a30",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Bollywood%20wives/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Bollywood%20wives/02.jpg"
+      ]
+    },
+    {
+      "title": "India from Above",
+      "client": "National Geographic UK",
+      "genre": "Documentary Series",
+      "category": "Documentary",
+      "accent": "#2a5a30",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20From%20Above/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20From%20Above/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20From%20Above/04.jpg"
+      ]
+    },
+    {
+      "title": "Formula 1 After Movie",
+      "client": "Abu Dhabi Grand Prix",
+      "genre": "Motorsport Film",
+      "category": "Documentary",
+      "accent": "#8a4010",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/F1%20After%20movie/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/F1%20After%20movie/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/F1%20After%20movie/03.jpg"
+      ]
+    },
+    {
+      "title": "Great Overland Adventure",
+      "client": "Mercedes-Benz / NDTV Prime",
+      "genre": "Travel Series",
+      "category": "Documentary",
+      "accent": "#1a4030",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/overland/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/overland/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/overland/03.jpg"
+      ]
+    },
+    {
+      "title": "India vs Pakistan",
+      "client": "Star Sports",
+      "genre": "Sports Highlights",
+      "category": "Sports",
+      "accent": "#2a4a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20vs%20Pak/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20vs%20Pak/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/India%20vs%20Pak/03.jpg"
+      ]
+    },
+    {
+      "title": "Doubles Trouble",
+      "client": "Olympic Channel",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#1a3a5a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Double%20trouble/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Double%20trouble/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Double%20trouble/03.jpg"
+      ]
+    },
+    {
+      "title": "ICC Cricket World Cup 2015",
+      "client": "Star Sports",
+      "genre": "Live Sports Highlights",
+      "category": "Sports",
+      "accent": "#1a2a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/World%20cup%2015/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/World%20cup%2015/02.jpg"
+      ]
+    },
+    {
+      "title": "Kurup",
+      "client": "",
+      "genre": "Film",
+      "category": "Film",
+      "accent": "#3a1a2a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Kurup/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Kurup/02.jpg"
+      ]
+    },
+    {
+      "title": "Rendezvous",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#2a2a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/rendezvous/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/rendezvous/03.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/rendezvous/05.jpg"
+      ]
+    },
+    {
+      "title": "Midwicket Tales",
+      "client": "",
+      "genre": "Cricket Documentary",
+      "category": "Documentary",
+      "accent": "#1a3a2a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Midwicket%20tales/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Midwicket%20tales/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Midwicket%20tales/03.jpg"
+      ]
+    },
+    {
+      "title": "Moving in with Malaika",
+      "client": "",
+      "genre": "Reality Series",
+      "category": "Reality",
+      "accent": "#4a2a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/moving%20in%20with%20malaika/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/moving%20in%20with%20malaika/03.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/moving%20in%20with%20malaika/05.jpg"
+      ]
+    },
+    {
+      "title": "Sound Trek",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#3a1a3a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sound%20trek/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sound%20trek/03.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sound%20trek/06.jpg"
+      ]
+    },
+    {
+      "title": "Umeed",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#2a3a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Umeed/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Umeed/03.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Umeed/05.jpg"
+      ]
+    },
+    {
+      "title": "Nach Baliye 7",
+      "client": "",
+      "genre": "Reality Series",
+      "category": "Reality",
+      "accent": "#3a1a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Nach%20baliye%207/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Nach%20baliye%207/02.jpg"
+      ]
+    },
+    {
+      "title": "Red Bull",
+      "client": "Red Bull",
+      "genre": "Ad Film",
+      "category": "Ad Film",
+      "accent": "#5a1a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/redbull/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/redbull/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/redbull/03.jpg"
+      ]
+    },
+    {
+      "title": "Sharekhan",
+      "client": "Sharekhan",
+      "genre": "Ad Film",
+      "category": "Ad Film",
+      "accent": "#1a4a3a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sharekhan%20ad%20film/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sharekhan%20ad%20film/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Sharekhan%20ad%20film/03.jpg"
+      ]
+    },
+    {
+      "title": "Aval Allah",
+      "client": "",
+      "genre": "Film",
+      "category": "Film",
+      "accent": "#2a1a3a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Aval%20allah/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Aval%20allah/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Aval%20allah/04.jpg"
+      ]
+    },
+    {
+      "title": "Hairdresser Show",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#2a2a3a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Hairdresser%20show/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Hairdresser%20show/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Hairdresser%20show/03.jpg"
+      ]
+    },
+    {
+      "title": "Expedition Borderland",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#3a2a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Expedition%20borderland/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Expedition%20borderland/02.jpg"
+      ]
+    },
+    {
+      "title": "Test Promotions",
+      "client": "",
+      "genre": "Sports",
+      "category": "Sports",
+      "accent": "#2a3a2a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Test%20Promotions/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Test%20Promotions/02.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Test%20Promotions/03.jpg"
+      ]
+    },
+    {
+      "title": "Tiago",
+      "client": "Tata Motors",
+      "genre": "Ad Film",
+      "category": "Ad Film",
+      "accent": "#1a3a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Tiago/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Tiago/02.jpg"
+      ]
+    },
+    {
+      "title": "Mother's Day Film",
+      "client": "",
+      "genre": "Short Film",
+      "category": "Short Film",
+      "accent": "#3a2a2a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/mother_s%20day%20film/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/mother_s%20day%20film/02.jpg"
+      ]
+    },
+    {
+      "title": "Wedding Films",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#3a3a1a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Wedding%20films/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Wedding%20films/02.jpg"
+      ]
+    },
+    {
+      "title": "Blinkit",
+      "client": "Blinkit",
+      "genre": "Ad Film",
+      "category": "Ad Film",
+      "accent": "#1a3a10",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Blinkit/01.jpg"
+      ]
+    },
+    {
+      "title": "Mega Icons",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#2a3a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Mega%20Icons/01.jpg"
+      ]
+    },
+    {
+      "title": "Unacademy",
+      "client": "Unacademy",
+      "genre": "Ad Film",
+      "category": "Ad Film",
+      "accent": "#1a2a4a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Unacademy/01.jpg"
+      ]
+    },
+    {
+      "title": "Uppu Kappuramu",
+      "client": "",
+      "genre": "Film",
+      "category": "Film",
+      "accent": "#2a1a2a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/Uppu%20Kappuramu/01.jpg"
+      ]
+    },
+    {
+      "title": "Master of Taste",
+      "client": "",
+      "genre": "Documentary",
+      "category": "Documentary",
+      "accent": "#3a2a3a",
+      "srcs": [
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/master%20of%20taste/01.jpg",
+        "https://pub-3620a4d683ac49fe86da0dbcd1edd71c.r2.dev/works/master%20of%20taste/02.jpg"
+      ]
+    }
+  ],
+  "about": {
+    "imageSrc": "",
+    "imageCaption": "Mar Ivanios · Trivandrum"
+  },
+  "clients": {
+    "row1": [
+      {
+        "src": "/logos/netflix.png",
+        "alt": "Netflix"
+      },
+      {
+        "src": "/logos/prime-video.png",
+        "alt": "Prime Video"
+      },
+      {
+        "src": "/logos/discovery.png",
+        "alt": "Discovery Channel"
+      },
+      {
+        "src": "/logos/jiohotstar.png",
+        "alt": "JioHotstar"
+      },
+      {
+        "src": "/logos/star-sports.jpg",
+        "alt": "Star Sports"
+      },
+      {
+        "src": "/logos/formula1.avif",
+        "alt": "Formula 1"
+      },
+      {
+        "src": "/logos/mercedes.svg",
+        "alt": "Mercedes-Benz"
+      },
+      {
+        "src": "/logos/netflix.png",
+        "alt": ""
+      }
+    ],
+    "row2": [
+      {
+        "src": "/logos/olympic-channel.png",
+        "alt": "Olympic Channel"
+      },
+      {
+        "src": "/logos/red-bull.svg",
+        "alt": "Red Bull"
+      },
+      {
+        "src": "/logos/loreal.png",
+        "alt": "L'Oréal"
+      },
+      {
+        "src": "/logos/fox-life.jpg",
+        "alt": "Fox Life"
+      },
+      {
+        "src": "/logos/epic-channel.jpg",
+        "alt": "Epic Channel"
+      },
+      {
+        "src": "/logos/colors-tv.webp",
+        "alt": "Colors TV"
+      }
+    ],
+    "row3": [
+      {
+        "src": "/logos/ndtv.png",
+        "alt": "NDTV"
+      },
+      {
+        "src": "/logos/endemol-shine.png",
+        "alt": "Endemol Shine India"
+      },
+      {
+        "src": "/logos/banijay-asia.png",
+        "alt": "Banijay Asia"
+      },
+      {
+        "src": "/logos/dharmatic.webp",
+        "alt": "Dharmatic Entertainment"
+      },
+      {
+        "src": "/logos/jellysmack.png",
+        "alt": "Jellysmack"
+      },
+      {
+        "src": "/logos/prime-focus.jpg",
+        "alt": "Prime Focus Technologies"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "label": "Hero",
+      "enabled": true
+    },
+    {
+      "id": "marquee1",
+      "label": "Marquee (top)",
+      "enabled": true
+    },
+    {
+      "id": "reel",
+      "label": "Reel Puzzle",
+      "enabled": true
+    },
+    {
+      "id": "statement",
+      "label": "Statement",
+      "enabled": true
+    },
+    {
+      "id": "clients",
+      "label": "Client Logos",
+      "enabled": true
+    },
+    {
+      "id": "about",
+      "label": "About",
+      "enabled": true
+    },
+    {
+      "id": "directors",
+      "label": "Directors",
+      "enabled": true
+    },
+    {
+      "id": "marquee2",
+      "label": "Marquee (mid)",
+      "enabled": true
+    },
+    {
+      "id": "gallery",
+      "label": "Gallery Strip",
+      "enabled": true
+    },
+    {
+      "id": "scatter",
+      "label": "Scatter Statement",
+      "enabled": true
+    },
+    {
+      "id": "work",
+      "label": "Work",
+      "enabled": true
+    },
+    {
+      "id": "contact",
+      "label": "Contact / Footer",
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOCTURNE — Production House</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --fg:#f2f0ea;
+    --accent:#ff4d1c;
+    --muted:#7a7a75;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:var(--bg);color:var(--fg);font-family:'Helvetica Neue',Arial,sans-serif;overflow-x:hidden;}
+  body{cursor:default;}
+
+  /* ---------- custom cursor ---------- */
+  .cursor{
+    position:fixed;top:0;left:0;width:14px;height:14px;border-radius:50%;
+    background:var(--accent);pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);mix-blend-mode:difference;
+    transition:width .25s ease, height .25s ease;
+  }
+
+  /* ---------- preloader ---------- */
+  .preloader{
+    position:fixed;inset:0;background:var(--bg);z-index:1000;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:1rem;
+  }
+  .preloader .count{font-size:14vw;font-weight:700;letter-spacing:-0.04em;line-height:1;}
+  .preloader .label{font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);}
+
+  /* ---------- layout ---------- */
+  section{position:relative;width:100%;}
+  .hero{
+    height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:3rem clamp(1.5rem,5vw,4rem);
+  }
+  .hero .eyebrow{
+    position:absolute;top:2.5rem;left:clamp(1.5rem,5vw,4rem);
+    font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);
+  }
+  .hero .scroll-hint{
+    position:absolute;top:2.5rem;right:clamp(1.5rem,5vw,4rem);
+    font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .hero h1{
+    font-size:clamp(3.5rem,12vw,9rem);
+    font-weight:700;letter-spacing:-0.045em;line-height:.85;
+    overflow:hidden;
+  }
+  .hero h1 .line{overflow:hidden;}
+  .hero h1 span{display:inline-block;transform:translateY(110%);}
+  .hero p{max-width:32ch;margin-top:1.5rem;color:var(--muted);font-size:1rem;line-height:1.5;}
+
+  /* ---------- pinned transform section ---------- */
+  .pin-wrap{height:300vh;position:relative;}
+  .pin-stage{
+    height:100vh;position:sticky;top:0;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .frame-img{
+    width:60vw;height:70vh;border-radius:4px;
+    background:linear-gradient(135deg,#2a2a2a,#151515);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);
+    will-change:transform, border-radius;
+  }
+  .pin-stage h2{
+    position:absolute;font-size:clamp(2rem,6vw,4.5rem);font-weight:700;
+    letter-spacing:-0.03em;text-align:center;mix-blend-mode:difference;
+    z-index:2;
+  }
+
+  /* ---------- horizontal scroll gallery ---------- */
+  .h-wrap{height:400vh;position:relative;}
+  .h-stage{height:100vh;position:sticky;top:0;overflow:hidden;display:flex;align-items:center;}
+  .h-track{display:flex;gap:2rem;padding-left:5vw;will-change:transform;}
+  .h-card{
+    flex:0 0 auto;width:32vw;height:60vh;border-radius:4px;
+    background:linear-gradient(160deg,#1f1f1f,#0d0d0d);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem;
+  }
+  .h-card span{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+  .h-card h3{font-size:1.5rem;margin-top:.4rem;letter-spacing:-0.02em;}
+
+  /* ---------- text reveal section ---------- */
+  .statement{
+    min-height:100vh;display:flex;align-items:center;padding:6rem clamp(1.5rem,5vw,4rem);
+  }
+  .statement p{
+    font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:600;letter-spacing:-0.03em;
+    line-height:1.25;max-width:20ch;
+  }
+  .statement .word{display:inline-block;opacity:.15;}
+
+  footer{
+    padding:4rem clamp(1.5rem,5vw,4rem) 3rem;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-top:1px solid #1f1f1f;
+  }
+  footer .big{font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-0.03em;}
+  footer .col{font-size:.85rem;color:var(--muted);line-height:1.8;}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<div class="preloader" id="preloader">
+  <div class="count" id="preCount">0%</div>
+  <div class="label">Loading Reel</div>
+</div>
+
+<section class="hero">
+  <div class="eyebrow">Nocturne Films — Est. 2019</div>
+  <div class="scroll-hint">Scroll ↓</div>
+  <h1>
+    <div class="line"><span>WE MAKE</span></div>
+    <div class="line"><span>THINGS MOVE</span></div>
+  </h1>
+  <p>A production house crafting film, motion and story for brands who don't want to look like anyone else.</p>
+</section>
+
+<div class="pin-wrap">
+  <div class="pin-stage">
+    <h2 id="pinHeading">SCROLL TO REVEAL</h2>
+    <div class="frame-img" id="frameImg">REEL_001.MOV</div>
+  </div>
+</div>
+
+<div class="h-wrap">
+  <div class="h-stage">
+    <div class="h-track" id="hTrack">
+      <div class="h-card"><span>Commercial</span><h3>Nike — Air Max Drop</h3></div>
+      <div class="h-card"><span>Music Video</span><h3>Nocturne — City Lights</h3></div>
+      <div class="h-card"><span>Documentary</span><h3>Concrete Dreams</h3></div>
+      <div class="h-card"><span>Brand Film</span><h3>Aesop — Ritual</h3></div>
+      <div class="h-card"><span>Fashion</span><h3>SSENSE Editorial</h3></div>
+    </div>
+  </div>
+</div>
+
+<section class="statement">
+  <p id="statementText">We don't shoot content. We build worlds frame by frame until scrolling feels like watching.</p>
+</section>
+
+<footer>
+  <div class="big">LET'S<br>TALK</div>
+  <div class="col">hello@nocturnefilms.com<br>Brooklyn, NYC<br>@nocturnefilms</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------------- fake preloader (simulates asset loading) ---------------- */
+const preCount = document.getElementById('preCount');
+const preloader = document.getElementById('preloader');
+let progress = 0;
+const loadInterval = setInterval(() => {
+  progress += Math.random() * 18;
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(loadInterval);
+    preCount.textContent = '100%';
+    gsap.to(preloader, {
+      yPercent: -100, duration: 1, ease: 'power4.inOut', delay: .3,
+      onComplete: () => { preloader.style.display = 'none'; playIntro(); initScroll(); }
+    });
+  } else {
+    preCount.textContent = Math.floor(progress) + '%';
+  }
+}, 120);
+
+/* ---------------- custom cursor ---------------- */
+const cursor = document.getElementById('cursor');
+window.addEventListener('mousemove', e => {
+  gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: .4, ease: 'power3.out' });
+});
+
+/* ---------------- simple "Lenis-style" smooth scroll ----------------
+   This hand-rolled version shows the *principle* — real projects should
+   use the actual Lenis library (https://lenis.darkroom.engineering/)
+   which handles touch, wheel deltas, and RAF sync with ScrollTrigger
+   far more robustly than this. */
+let current = 0, target = 0, ease = 0.085;
+function smoothScroll(){
+  target = window.scrollY;
+  current += (target - current) * ease;
+  ScrollTrigger.update();
+  requestAnimationFrame(smoothScroll);
+}
+
+function playIntro(){
+  gsap.to('.hero h1 span', {
+    yPercent: 0, duration: 1.1, ease: 'power4.out', stagger: 0.12, delay: .1
+  });
+  gsap.to('.hero p, .eyebrow, .scroll-hint', {
+    opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: .5,
+    from: { opacity: 0, y: 20 }
+  });
+}
+
+function initScroll(){
+  requestAnimationFrame(smoothScroll);
+
+  /* Pinned section: image scales + rounds corners + heading fades as you scroll through it */
+  const pinTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.pin-wrap',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      pin: '.pin-stage',
+    }
+  });
+  pinTl
+    .to('#pinHeading', { opacity: 0, scale: 1.4, duration: .3 })
+    .to('#frameImg', {
+      width: '100vw', height: '100vh', borderRadius: 0, duration: .7
+    }, '<')
+    .to('#frameImg', { opacity: .85, duration: .2 }, '<');
+
+  /* Horizontal scroll gallery driven by vertical scroll */
+  const track = document.getElementById('hTrack');
+  gsap.to(track, {
+    x: () => -(track.scrollWidth - window.innerWidth + 100),
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.h-wrap',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+    }
+  });
+
+  /* Word-by-word text reveal tied to scroll */
+  const statementEl = document.getElementById('statementText');
+  const words = statementEl.textContent.split(' ');
+  statementEl.innerHTML = words.map(w => `<span class="word">${w}</span>`).join(' ');
+  gsap.to('.statement .word', {
+    opacity: 1,
+    stagger: 0.08,
+    scrollTrigger: {
+      trigger: '.statement',
+      start: 'top 70%',
+      end: 'bottom 60%',
+      scrub: 1,
+    }
+  });
+}
+</script>
+</body>
+</html>

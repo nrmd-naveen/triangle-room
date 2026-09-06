@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triangle Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F4F0; --paper-deep:#E9EBE5; --ink:#141714;
+    --green:#157A50; --green-deep:#0D4A31; --line:#D3D6CE; --dim:#6E736C;
+    --maxw:1060px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--paper);color:var(--ink);font-family:'Archivo',sans-serif;
+    font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;
+    background:rgba(243,244,240,.92);backdrop-filter:blur(8px);z-index:20;}
+  .head-in{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:20px;}
+  .wordmark{font-family:'Marcellus',serif;font-size:15px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:12px;}
+  nav{display:flex;gap:26px;}
+  nav a{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .2s ease;}
+  nav a:hover{color:var(--green);}
+
+  /* HERO */
+  .hero{padding:104px 0 84px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:60px;align-items:center;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--green);margin-bottom:24px;}
+  h1{font-family:'Marcellus',serif;font-weight:400;font-size:clamp(40px,6.6vw,70px);line-height:1.05;}
+  .hero-hook{margin-top:30px;font-family:'Marcellus',serif;font-size:clamp(19px,2.4vw,23px);
+    line-height:1.48;color:var(--green-deep);max-width:36ch;}
+  .tri-wrap{display:flex;flex-direction:column;align-items:center;}
+  .tri-wrap svg{width:100%;max-width:280px;height:auto;overflow:visible;}
+  .tri-edge{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:square;}
+  .tri-arc{fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:3 6;stroke-linecap:round;}
+  .tri-caption{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--dim);text-align:center;margin-top:18px;}
+  @media (prefers-reduced-motion:no-preference){
+    .tri-edge{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.6s ease forwards .2s;}
+    .tri-arc{opacity:0;animation:fadein .8s ease forwards 1.5s;}
+    @keyframes draw{to{stroke-dashoffset:0;}}
+    @keyframes fadein{to{opacity:1;}}
+  }
+
+  section{padding:74px 0;border-top:1px solid var(--line);}
+  .sec-label{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;}
+  .sec-label h2{font-family:'Marcellus',serif;font-weight:400;font-size:clamp(26px,3.4vw,34px);}
+  .sec-label .tc{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);letter-spacing:.1em;}
+  .note{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;
+    color:var(--dim);line-height:1.7;margin-bottom:30px;max-width:70ch;}
+
+  /* STATEMENT */
+  .stmt{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+  .stmt p{margin-bottom:1.15em;max-width:56ch;}
+  .stmt p:last-child{margin-bottom:0;}
+  .stmt .lede{font-size:19.5px;font-weight:500;}
+  .stmt em{font-style:normal;color:var(--green-deep);font-weight:600;}
+  .founders{margin:26px 0 30px;border-top:1px solid var(--line);}
+  .founders div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:18px;
+    padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+  .fname{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--green);}
+  .fdesc{font-size:15.5px;line-height:1.55;}
+  @media (max-width:860px){
+    .founders div{grid-template-columns:1fr;gap:6px;}
+  }
+
+  .card{align-self:start;background:var(--paper-deep);border:1px solid var(--line);padding:30px;}
+  .card dl{display:grid;gap:18px;}
+  .card dt{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:4px;}
+  .card dd{font-size:15.5px;line-height:1.5;}
+
+  /* COVERAGE GRID */
+  .cov{display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);border-left:1px solid var(--line);}
+  .cov div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:24px 20px;transition:background .2s ease,color .2s ease;}
+  .cov div:hover{background:var(--green-deep);color:var(--paper);}
+  .cov h3{font-family:'Marcellus',serif;font-weight:400;font-size:18px;margin-bottom:6px;}
+  .cov span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;opacity:.7;}
+
+  .reach{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:34px;
+    border-top:1px solid var(--line);border-left:1px solid var(--line);}
+  .rblock{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 24px;}
+  .rlab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+  .rlist{display:flex;flex-wrap:wrap;gap:8px 22px;}
+  .rlist span{font-family:'Marcellus',serif;font-size:clamp(17px,2vw,22px);color:var(--ink);}
+  .rnote{margin-top:16px;font-size:14.5px;color:var(--dim);line-height:1.55;}
+  @media (max-width:860px){.reach{grid-template-columns:1fr;}}
+
+  /* PROOF / EDL */
+  .edl-head,.edl-row{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 160px;
+    gap:20px;align-items:baseline;}
+  .edl-head{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);padding-bottom:12px;border-bottom:1px solid var(--ink);}
+  .edl-row{padding:22px 0;border-bottom:1px solid var(--line);transition:background .2s ease;}
+  .edl-row:hover{background:var(--paper-deep);}
+  .edl-title{font-family:'Marcellus',serif;font-size:19px;line-height:1.25;
+    color:var(--ink);text-decoration:none;}
+  a.edl-title:hover{color:var(--green-deep);}
+  a.edl-title::after{content:"\2197";font-size:.7em;margin-left:8px;color:var(--green);
+    opacity:0;transition:opacity .2s ease;}
+  .edl-row:hover a.edl-title::after{opacity:1;}
+  .edl-desc{margin-top:7px;font-size:14.5px;line-height:1.5;color:var(--dim);max-width:52ch;}
+  .edl-group{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--green);margin:48px 0 14px;}
+  .edl-group:first-of-type{margin-top:46px;}
+  .edl-flag{display:inline-block;margin-top:10px;font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.08em;color:var(--paper);background:var(--green-deep);padding:3px 9px;}
+  .edl-who{font-size:14.5px;color:var(--dim);}
+  .edl-plat{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-align:right;}
+
+  /* PARTNERS STRIP */
+  .pstrip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border-top:1px solid var(--ink);border-left:1px solid var(--line);}
+  .pstrip a{display:block;text-decoration:none;color:var(--ink);
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:30px 26px;transition:background .2s ease;}
+  .pstrip a:hover{background:var(--paper-deep);}
+  .pstrip .pn{font-family:'Marcellus',serif;font-size:23px;line-height:1.15;}
+  .pstrip .pr{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--green);}
+  .pstrip .pd{margin-top:14px;font-size:15px;line-height:1.55;color:var(--dim);}
+
+  /* SLATE PLACEHOLDER */
+  .slate{background:var(--green-deep);color:var(--paper);padding:66px 0;}
+  .slate h2{font-family:'Marcellus',serif;font-weight:400;
+    font-size:clamp(24px,3.2vw,34px);line-height:1.25;max-width:22ch;}
+  .slate p{margin-top:18px;max-width:56ch;color:#C7DCCF;}
+  .slate .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:#8FBBA1;margin-bottom:20px;}
+  .slate a{display:inline-block;margin-top:26px;color:var(--paper);
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;text-decoration:none;border-bottom:1px solid #6FA485;padding-bottom:3px;}
+  .slate a:hover{border-color:var(--paper);}
+
+  footer{padding:74px 0 58px;}
+  .foot-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;}
+  .foot-cta{font-family:'Marcellus',serif;font-size:clamp(26px,4vw,40px);line-height:1.2;max-width:20ch;}
+  .foot-links{display:grid;gap:8px;text-align:right;}
+  .foot-links a{color:var(--ink);text-decoration:none;font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:.06em;border-bottom:1px solid var(--green);padding-bottom:2px;}
+  .foot-links a:hover{color:var(--green);}
+  .foot-base{margin-top:54px;padding-top:20px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);}
+
+
+
+  .statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border-top:1px solid #33382F;border-bottom:1px solid #33382F;margin-bottom:44px;}
+  .stat{padding:34px 0;border-right:1px solid #33382F;}
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Marcellus',serif;font-size:clamp(46px,7vw,76px);
+    line-height:1;color:var(--paper);letter-spacing:-.01em;}
+  .stat .num sup{font-size:.38em;color:#4E9B76;top:-1.1em;margin-left:2px;}
+  .stat .slab{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.2em;text-transform:uppercase;color:#7C837A;}
+  @media (max-width:860px){
+    .statrow{grid-template-columns:1fr;}
+    .stat{border-right:none;border-bottom:1px solid #33382F;padding:26px 0;}
+    .stat:last-child{border-bottom:none;}
+  }
+
+  /* network wall */
+  .netwall{background:var(--ink);padding:44px 0;}
+  .netwall .lab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.24em;
+    text-transform:uppercase;color:#7C837A;margin-bottom:22px;}
+  .netblock{margin-bottom:34px;}
+  .netblock:last-of-type{margin-bottom:0;}
+  .ngroup{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:#4E9B76;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px solid #33382F;}
+  .netgrid{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline;}
+  .netgrid span{font-family:'Marcellus',serif;font-size:clamp(16px,1.9vw,21px);
+    color:var(--paper);opacity:.7;transition:opacity .2s ease;}
+  .netgrid span:hover{opacity:1;}
+  .netfoot{margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.1em;color:#7C837A;}
+
+  /* image slots */
+  .imgslot{background:var(--paper-deep);border:1px dashed #B9BDB3;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:26px;min-height:200px;}
+  .imgslot span{font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1.9;max-width:34ch;}
+  .imgband{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:38px 0 0;}
+  .imgband .imgslot{min-height:180px;}
+  .roomshot{margin-top:34px;}
+  .roomshot .imgslot{min-height:280px;}
+
+  /* building section */
+  .build{background:var(--green-deep);color:var(--paper);padding:82px 0;}
+  .build .tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:#8FBBA1;margin-bottom:26px;}
+  .build h2{font-family:'Marcellus',serif;font-weight:400;
+    font-size:clamp(27px,4.2vw,44px);line-height:1.22;max-width:20ch;}
+  .build .sub{margin-top:26px;font-size:18px;line-height:1.6;color:#C7DCCF;max-width:52ch;}
+  .bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:50px;
+    border-top:1px solid #2C6047;border-left:1px solid #2C6047;}
+  .bgrid div{border-right:1px solid #2C6047;border-bottom:1px solid #2C6047;padding:26px 22px;}
+  .bgrid h3{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:#8FBBA1;font-weight:500;margin-bottom:10px;}
+  .bgrid p{font-size:15.5px;line-height:1.55;color:#DCE8E0;}
+  .build a.ask{display:inline-block;margin-top:38px;color:var(--paper);
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;text-decoration:none;border-bottom:1px solid #6FA485;padding-bottom:3px;}
+  .build a.ask:hover{border-color:var(--paper);}
+
+  /* reel button */
+  .reelbar{display:flex;align-items:center;gap:18px;margin-top:34px;flex-wrap:wrap;}
+  .reelbtn{display:inline-flex;align-items:center;gap:12px;text-decoration:none;
+    border:1px solid var(--ink);color:var(--ink);padding:13px 22px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;
+    text-transform:uppercase;transition:background .2s ease,color .2s ease;}
+  .reelbtn:hover{background:var(--ink);color:var(--paper);}
+  .reelnote{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.06em;}
+
+  @media (max-width:860px){
+    .imgband{grid-template-columns:1fr;}
+    .bgrid{grid-template-columns:1fr;}
+  }
+
+  a:focus-visible{outline:2px solid var(--green);outline-offset:3px;}
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.on{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+  @media (max-width:860px){
+    nav{display:none;}
+    .hero{grid-template-columns:1fr;gap:44px;padding:64px 0 54px;}
+    .tri-wrap{order:-1;} .tri-wrap svg{max-width:190px;}
+    .stmt{grid-template-columns:1fr;gap:38px;}
+    .cov{grid-template-columns:repeat(2,1fr);}
+    .pstrip{grid-template-columns:1fr;}
+    .edl-head{display:none;}
+    .edl-row{grid-template-columns:1fr;gap:4px;}
+    .edl-plat{text-align:left;color:var(--dim);}
+    .foot-grid{grid-template-columns:1fr;} .foot-links{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-in">
+    <a class="wordmark" href="#">
+      <svg width="22" height="20" viewBox="0 0 44 40" aria-hidden="true">
+        <path d="M22 3 L41 37 H14" fill="none" stroke="#141714" stroke-width="2.5"/>
+        <path d="M14 37 A 11 11 0 0 1 6 26" fill="none" stroke="#157A50" stroke-width="2" stroke-dasharray="2 4"/>
+      </svg>
+      Triangle Room
+    </a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#coverage">What we cover</a>
+      <a href="#proof">Work</a>
+      <a href="#partners">Partners</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">Independent production house / Kerala</div>
+      <h1>New company.<br>Not new<br>at this.</h1>
+      <p class="hero-hook">Three classmates who spent fifteen years apart learning different halves of the business. Back in the same room.</p>
+    </div>
+    <div class="tri-wrap">
+      <svg viewBox="0 0 200 180" role="img" aria-label="Triangle Room mark">
+        <path class="tri-edge" d="M100 12 L186 168 H62"/>
+        <path class="tri-arc" d="M62 168 A 48 48 0 0 1 26 122"/>
+      </svg>
+      <div class="tri-caption">The room. Trivandrum, 2008.</div>
+    </div>
+  </div>
+
+
+  <!-- SCALE + NETWORK WALL -->
+  <div class="netwall">
+    <div class="wrap">
+      <div class="statrow">
+        <div class="stat">
+          <div class="num">18<sup>+</sup></div>
+          <div class="slab">Years in post</div>
+        </div>
+        <div class="stat">
+          <div class="num">38<sup>+</sup></div>
+          <div class="slab">Years combined in the entertainment industry</div>
+        </div>
+        <div class="stat">
+          <div class="num">60<sup>+</sup></div>
+          <div class="slab">Credited productions among the three</div>
+        </div>
+      </div>
+
+      <div class="lab">Our work has been made for</div>
+
+      <div class="netblock">
+        <div class="ngroup">Platforms and networks</div>
+        <div class="netgrid">
+          <span>Netflix</span><span>National Geographic</span><span>Discovery</span>
+          <span>Prime Video</span><span>JioHotstar</span><span>JioCinema</span>
+          <span>Olympic Channel</span><span>Star Sports</span><span>Sony</span>
+          <span>Asianet</span><span>MTV</span><span>Fox Life</span>
+          <span>Colors</span><span>NDTV Prime</span><span>Epic</span>
+          <span>Kappa TV</span><span>Amrita TV</span><span>Surya TV</span><span>Pratilipi FM</span><span>YouTube</span>
+        </div>
+      </div>
+
+      <div class="netblock">
+        <div class="ngroup">Production houses</div>
+        <div class="netgrid">
+          <span>Endemol Shine India</span><span>Banijay</span><span>Greymatter Entertainment</span>
+          <span>Dharmatic Entertainment</span><span>Big Synergy Media Ltd</span><span>Studio Next, Sony Pictures</span>
+          <span>Prime Focus Technologies</span><span>Creator Engine</span><span>Reliance Entertainment</span>
+          <span>Silly Monks Entertainment</span><span>Wonderwall Media</span><span>Purple Monkey</span><span>Slightly Tilted</span><span>Momomoto Studios</span>
+        </div>
+      </div>
+
+      <div class="netblock">
+        <div class="ngroup">Brands</div>
+        <div class="netgrid">
+          <span>Mercedes Benz</span><span>Red Bull</span><span>Formula 1</span><span>L’Oreal</span>
+          <span>Hewlett Packard</span><span>Platinum</span><span>Unacademy</span>
+          <span>Exide</span><span>Sharekhan</span><span>Blinkit</span><span>Jellysmack</span>
+          <span>Glassworks London</span><span>Metropolis Lab</span>
+        </div>
+      </div>
+
+      <div class="netfoot" style="margin-top:38px;padding-top:22px;border-top:1px solid #33382F;">Three careers. One company.</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">01</span><h2>Who we are</h2></div>
+      <div class="stmt">
+        <div class="reveal">
+          <p class="lede">Before it became a production studio, it was a small, triangular room in Trivandrum. It served as Anu's home and workspace while he mastered editing throughout his years at Mar Ivanios College.</p>
+          <p>It was in that room that Anu, Midhuna and Jibin first came together, ideating, experimenting and mapping out the work they wanted to create. While few of those early projects were ever released, the foundation of a shared creative voice was built.</p>
+          <p>Their careers soon expanded into key sectors of the media landscape.</p>
+
+          <div class="founders">
+            <div><span class="fname">Anu</span><span class="fdesc">Relocated to Mumbai as a post-production editor, cutting non-fiction and documentary for Netflix, National Geographic, Discovery, Olympic Channel, JioHotstar and Prime Video. Sport, food, reality, motoring, travel: the range that made production houses bring him back project after project.</span></div>
+            <div><span class="fname">Midhuna</span><span class="fdesc">Managed major production pipelines across Mumbai, Hyderabad, Chennai and Kerala, running high-volume reality television and commercial campaigns for Sony, Asianet, MTV and Endemol Shine India.</span></div>
+            <div><span class="fname">Jibin</span><span class="fdesc">Focused on development in Kerala, directing and writing across television, narrative audio and short film for Kappa TV, Wonderwall Media and Amrita TV, alongside a large body of work made for YouTube.</span></div>
+          </div>
+
+          <p>Fifteen years later, the three founders have reunited as directors of Triangle Room. Named after the space where it all began, the company combines three careers of cross-industry expertise, scale and technical capability with the same original instinct: <em>to bring ambitious ideas to completion.</em></p>
+        </div>
+        <aside class="card reveal">
+          <dl>
+            <div><dt>Directors</dt><dd>Anu Kamala, Midhuna Pichy, Jibin Babu</dd></div>
+            <div><dt>Disciplines</dt><dd>Development and writing, story and post, production and delivery</dd></div>
+            <div><dt>Worked across</dt><dd>Mumbai, Hyderabad, Chennai, Kerala</dd></div>
+          </dl>
+        </aside>
+      </div>
+      <div class="reach reveal">
+        <div class="rblock">
+          <div class="rlab">Territories</div>
+          <div class="rlist"><span>India</span><span>United States</span><span>United Kingdom</span><span>France</span><span>UAE</span></div>
+          <div class="rnote">Regional, national and international productions.</div>
+        </div>
+        <div class="rblock">
+          <div class="rlab">Languages</div>
+          <div class="rlist"><span>English</span><span>Hindi</span><span>Malayalam</span><span>Tamil</span><span>Telugu</span><span>Kannada</span></div>
+          <div class="rnote">Work delivered across six languages.</div>
+        </div>
+      </div>
+
+      <div class="roomshot reveal">
+        <div class="imgslot"><span>Photograph of the room, or the three of you in it<br>Old, grainy and real beats polished. This is the most valuable image on the site.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COVERAGE -->
+  <section id="coverage">
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">02</span><h2>What we cover</h2></div>
+      <p class="note">Three people, three disciplines, one company. There is very little in this industry one of us has not already shipped.</p>
+      <div class="cov reveal">
+        <div><h3>Documentary</h3><span>Series and feature</span></div>
+        <div><h3>Reality and format</h3><span>Studio and location</span></div>
+        <div><h3>Live production</h3><span>Sport and events</span></div>
+        <div><h3>Music</h3><span>Series and video</span></div>
+        <div><h3>Fiction</h3><span>Short and feature</span></div>
+        <div><h3>Audio drama</h3><span>Scripted series</span></div>
+        <div><h3>Ad film</h3><span>Brand and agency</span></div>
+        <div><h3>Post production</h3><span>Story and finish</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section id="proof">
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">03</span><h2>What we have made</h2></div>
+      <p class="note">Triangle Room is a new company. The work below was made by our partners before it existed, at the production houses and networks credited. We are showing it because it is the honest measure of what we can do.</p>
+
+      <div class="imgband reveal">
+        <div class="imgslot"><span>Still you own<br>Pachamarakaikal or a music video frame</span></div>
+        <div class="imgslot"><span>Behind the scenes<br>One of you working on location or in the suite</span></div>
+        <div class="imgslot"><span>Still you own<br>Ad film or short with clearance</span></div>
+      </div>
+
+      <div class="reelbar reveal">
+        <a class="reelbtn" href="#" target="_blank" rel="noopener">
+          <svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0 L11 6.5 L0 13 Z" fill="currentColor"/></svg>
+          Watch the reel
+        </a>
+        <span class="reelnote">Sixty seconds. No autoplay. Link it when the cut is ready.</span>
+      </div>
+
+      <div class="edl-group">Documentary</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/the-greatest-rivalry" target="_blank" rel="noopener">The Greatest Rivalry: India vs Pakistan</a><div class="edl-desc">Three part series tracing the cricket rivalry between the two countries, told by Gavaskar, Sehwag, Ganguly, Shoaib Akhtar and Javed Miandad. Netflix, 2025.</div></div>
+        <span class="edl-who">Anu Kamala, Series Editor</span>
+        <span class="edl-plat">NETFLIX / GREYMATTER</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/tarini-for-national-geographic-channel" target="_blank" rel="noopener">Tarini: The Goddess and the Sea</a><div class="edl-desc">The 254 day voyage of six Indian Navy officers who became the first all woman crew to circumnavigate the globe. Made with the Indian Navy, premiered on International Women's Day.</div><span class="edl-flag">BEST EDITOR NOMINATION / ASIAN TELEVISION AWARDS 2019</span></div>
+        <span class="edl-who">Anu Kamala, Film Editor</span>
+        <span class="edl-plat">NAT GEO / PFT</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/india-from-above-natgeo-uk" target="_blank" rel="noopener">India From Above</a><div class="edl-desc">Aerial documentary series on the landscape, engineering and history of India, made for the international Nat Geo network.</div></div>
+        <span class="edl-who">Anu Kamala, Series Editor</span>
+        <span class="edl-plat">NAT GEO UK / PFT</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/mega-icons-for-national-geographic-channel" target="_blank" rel="noopener">Mega Icons</a><div class="edl-desc">Documentary series profiling the Indians who shaped modern India.</div></div>
+        <span class="edl-who">Anu Kamala, Series Editor</span>
+        <span class="edl-plat">NAT GEO / PFT</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/the-greatest-two-minutes-in-sports" target="_blank" rel="noopener">The Greatest 2 Minutes in Sports</a><div class="edl-desc">American sports documentary on the Kentucky Derby, made for the US market.</div></div>
+        <span class="edl-who">Anu Kamala, Series Editor</span>
+        <span class="edl-plat">CREATOR ENGINE</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/doubles-trouble" target="_blank" rel="noopener">Doubles Trouble</a><div class="edl-desc">Sports docu reality following Rohan Bopanna as he searches for the doubles partner who will take him to the Olympics.</div></div>
+        <span class="edl-who">Anu Kamala, Chief Editor</span>
+        <span class="edl-plat">OLYMPIC CHANNEL</span>
+      </div>
+      <div class="edl-group">Unscripted and reality</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Bigg Boss Malayalam, Seasons 1, 3 and 4</span><div class="edl-desc">The Malayalam edition of the format. Three seasons, moving up from episode producer to post producer to creative producer.</div></div>
+        <span class="edl-who">Midhuna Pichy, Episode to Creative Producer</span>
+        <span class="edl-plat">ASIANET / ENDEMOL SHINE</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Kaun Banega Crorepati</span><div class="edl-desc">The Indian edition of the quiz format, and its Malayalam version Ningalkkum Aakaam Kodeeshwaran.</div></div>
+        <span class="edl-who">Midhuna Pichy, Senior Creative Executive</span>
+        <span class="edl-plat">SONY / BIG SYNERGY MEDIA LTD</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Ace of Space</span><div class="edl-desc">Season one of the MTV reality format.</div></div>
+        <span class="edl-who">Midhuna Pichy, Episode Producer</span>
+        <span class="edl-plat">MTV / ENDEMOL SHINE</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Dus Ka Dum</span><div class="edl-desc">Content development for the Sony reality format.</div></div>
+        <span class="edl-who">Midhuna Pichy, Senior Creative Executive</span>
+        <span class="edl-plat">SONY / BIG SYNERGY MEDIA LTD</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">People’s Choice</span><div class="edl-desc">Content development for the Asianet format.</div></div>
+        <span class="edl-who">Midhuna Pichy, Senior Creative Executive</span>
+        <span class="edl-plat">ASIANET / BIG SYNERGY MEDIA LTD</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Sell Me The Answer, Seasons 1 and 2</span><div class="edl-desc">Game show across two seasons.</div></div>
+        <span class="edl-who">Midhuna Pichy, Senior Associate Producer</span>
+        <span class="edl-plat">ASIANET / BIG SYNERGY MEDIA LTD</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Fastest Family First</span><div class="edl-desc">Season one of the family game show.</div></div>
+        <span class="edl-who">Midhuna Pichy, Assistant Director</span>
+        <span class="edl-plat">ASIANET / BIG SYNERGY MEDIA LTD</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/docu-reality-for-olympic-channel" target="_blank" rel="noopener">Wrestling My Family</a><div class="edl-desc">Docu reality series following a wrestling family.</div></div>
+        <span class="edl-who">Anu Kamala, Lead Editor</span>
+        <span class="edl-plat">OLYMPIC CHANNEL</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/ongoing-project-flbw-season-2" target="_blank" rel="noopener">Fabulous Lives of Bollywood Wives</a><div class="edl-desc">Lifestyle reality series for Netflix, made by Dharmatic.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">NETFLIX / DHARMATIC</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Malayalee House</span><div class="edl-desc">The Malayalam lockdown reality format, an early forerunner of Bigg Boss Malayalam.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Video Editor</span>
+        <span class="edl-plat">VEDARTHA ENTERTAINMENT / SURYA TV</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Bigg Boss, Hindi and Kannada</span><div class="edl-desc">Two language editions of the lockdown reality format for Colors.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">COLORS / ENDEMOL SHINE</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Moving In With Malaika</span><div class="edl-desc">Celebrity docu reality built around Malaika Arora, her family and her circle. Sixteen episodes for JioHotstar, made by Banijay Asia.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">JIOHOTSTAR / BANIJAY ASIA</span>
+      </div>
+      <div class="edl-group">Travel, food and live</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/travel-documentary-series-for-discovery-channel" target="_blank" rel="noopener">Expedition Borderlands with Ash and Lev</a><div class="edl-desc">Travel documentary series across border regions.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">DISCOVERY</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/masters-of-taste-episodes" target="_blank" rel="noopener">Masters of Taste with Gary Mehigan</a><div class="edl-desc">Food and travel series following the MasterChef Australia judge through India.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">FOX LIFE / ENDEMOL SHINE</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Great Overland Adventure 2</span><div class="edl-desc">Long form travel series made for Mercedes Benz.</div></div>
+        <span class="edl-who">Anu Kamala, Senior Editor</span>
+        <span class="edl-plat">MERCEDES BENZ / NDTV PRIME</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://editoranukamala.myportfolio.com/icc-cricket-world-cup-2015-starsports" target="_blank" rel="noopener">ICC Cricket World Cup 2015</a><div class="edl-desc">Live tournament highlights, cut to broadcast deadline.</div></div>
+        <span class="edl-who">Anu Kamala, Highlights Editor</span>
+        <span class="edl-plat">STAR SPORTS</span>
+      </div>
+      <div class="edl-group">Music and fiction</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://www.youtube.com/watch?v=eGk5fcfTR0Q" target="_blank" rel="noopener">Music Mojo, Season 7</a><div class="edl-desc">Live music series pairing artists across genres, one of the longest running music formats in Malayalam television.</div></div>
+        <span class="edl-who">Jibin Babu, Producer</span>
+        <span class="edl-plat">KAPPA TV</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><a class="edl-title" href="https://www.youtube.com/watch?v=KUFKX5v3UUY" target="_blank" rel="noopener">Autumn Leaf, The Big Stage</a></div>
+        <span class="edl-who">Jibin Babu, Producer</span>
+        <span class="edl-plat">AMRITA TV</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Agam music videos</span><div class="edl-desc">Music videos for the band Agam, made for the Grammy Awards.</div></div>
+        <span class="edl-who">Jibin Babu, Associate Director</span>
+        <span class="edl-plat">MUSIC VIDEO</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Pachamarakaikal</span><div class="edl-desc">Debut directorial short film.</div><span class="edl-flag">TWO KERALA STATE AWARDS</span></div>
+        <span class="edl-who">Jibin Babu, Writer and Director</span>
+        <span class="edl-plat">SHORT FILM</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Audio drama series</span><div class="edl-desc">Written and directed scripted audio series for the platform.</div></div>
+        <span class="edl-who">Jibin Babu, Writer and Director</span>
+        <span class="edl-plat">PRATILIPI FM</span>
+      </div>
+      <div class="edl-group">Events</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Indiegaga</span><div class="edl-desc">Independent music festival, across its Bangalore, Ernakulam and Trivandrum editions.</div></div>
+        <span class="edl-who">Jibin Babu, Artist Manager</span>
+        <span class="edl-plat">LIVE EVENT</span>
+      </div>
+      <div class="edl-group">Brand and short form</div>
+      <div class="edl-head"><span>Title</span><span>Partner and role</span><span style="text-align:right">Made at</span></div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Ad films for HP, Platinum and Exide</span></div>
+        <span class="edl-who">Midhuna Pichy, Associate Producer</span>
+        <span class="edl-plat">MOMOMOTO STUDIOS</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Unacademy, Sharekhan, Blinkit, Metropolis Lab</span></div>
+        <span class="edl-who">Anu Kamala, Editor</span>
+        <span class="edl-plat">AD FILM</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Formula 1 After Movie, Abu Dhabi Grand Prix 2016</span></div>
+        <span class="edl-who">Anu Kamala, Editor</span>
+        <span class="edl-plat">FORMULA 1</span>
+      </div>
+      <div class="edl-row reveal">
+        <div><span class="edl-title">Jellysmack France, Glassworks London</span></div>
+        <span class="edl-who">Anu Kamala, Editor</span>
+        <span class="edl-plat">SOCIAL AND BRANDED</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section id="partners">
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">04</span><h2>The Partners</h2></div>
+      <div class="pstrip reveal">
+        <a href="anu_kamala_profile.html">
+          <div class="pn">Anu Kamala</div>
+          <div class="pr">Director / Story and Post</div>
+          <div class="pd">Anu has spent eighteen years finding the story after the camera stops rolling. Netflix, Nat Geo, Discovery, Olympic Channel, JioHotstar and Prime Video. Best Editor nomination at the Asian Television Awards.</div>
+        </a>
+        <a href="triangle_room_team.html">
+          <div class="pn">Midhuna Pichy</div>
+          <div class="pr">Director / Production and Delivery</div>
+          <div class="pd">Midhuna makes ambitious shows actually happen, on schedule and on budget. Three seasons of Bigg Boss Malayalam, seven other international reality formats, and ad films for HP, Platinum and Exide.</div>
+        </a>
+        <a href="triangle_room_team.html">
+          <div class="pn">Jibin Babu</div>
+          <div class="pr">Director / Development and Writing</div>
+          <div class="pd">Jibin writes the thing before anyone knows it is a thing. Nine years in development and direction. Twelve television shows. Two Kerala State Awards for his debut short.</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE ARE BUILDING -->
+  <div class="build">
+    <div class="wrap">
+      <div class="tag">What we are building</div>
+      <h2>Documentaries, premium unscripted formats and original fiction, rooted in South India and made for audiences anywhere.</h2>
+      <p class="sub">Our first slate is in active development across all three. We are talking to platforms now.</p>
+      <div class="bgrid">
+        <div>
+          <h3>Documentary</h3>
+          <p>Feature and series. Character led, internationally finishable, built on access we already have.</p>
+        </div>
+        <div>
+          <h3>Premium unscripted</h3>
+          <p>Original formats for Malayalam and pan Indian streaming. Designed to return for a second season.</p>
+        </div>
+        <div>
+          <h3>Fiction</h3>
+          <p>Features and scripted originals, written in house and rooted in stories from here.</p>
+        </div>
+      </div>
+      <a class="ask" href="#contact">Ask to see the slate</a>
+    </div>
+  </div>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-cta">We started in one room. Now we would like to fill it with your work.</div>
+      <div class="foot-links">
+        <a href="mailto:connect@triangleroom.in">connect@triangleroom.in</a>
+        <a href="tel:+919846497008">+91 98464 97008</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Triangle Room</span>
+      <span>Trivandrum / Kerala</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>

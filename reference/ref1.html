@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERGLOW — Edit &amp; Post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0c;
+    --bone:#ece7dd;
+    --signal:#ff3d2e;
+    --graphite:#6b6b66;
+    --reel:#151515;
+    --ease-out: cubic-bezier(.16,1,.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:var(--ink);color:var(--bone);overflow-x:hidden;}
+  body{
+    font-family:'Archivo',sans-serif;
+    cursor:none;
+  }
+  ::selection{background:var(--signal);color:var(--ink);}
+  a{color:inherit;text-decoration:none;}
+  .mono{font-family:'Space Mono',monospace;}
+
+  /* ---------------- grain overlay ---------------- */
+  .grain{
+    position:fixed;inset:0;z-index:998;pointer-events:none;
+    opacity:.05;mix-blend-mode:overlay;
+  }
+
+  /* ---------------- custom cursor ---------------- */
+  .cursor{
+    position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;
+    background:var(--signal);pointer-events:none;z-index:9999;
+    transform:translate(-50%,-50%);
+  }
+  .cursor-ring{
+    position:fixed;top:0;left:0;width:38px;height:38px;border-radius:50%;
+    border:1px solid rgba(236,231,221,.4);pointer-events:none;z-index:9998;
+    transform:translate(-50%,-50%);
+  }
+
+  /* ---------------- preloader ---------------- */
+  .preloader{
+    position:fixed;inset:0;background:var(--ink);z-index:1000;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;
+  }
+  .preloader .tc{font-size:1.1rem;letter-spacing:.15em;color:var(--signal);}
+  .preloader .bar{width:min(60vw,340px);height:1px;background:#2a2a2a;position:relative;margin-top:.4rem;}
+  .preloader .bar-fill{position:absolute;left:0;top:0;height:100%;width:0%;background:var(--signal);}
+  .preloader .label{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--graphite);margin-top:.8rem;}
+
+  /* ---------------- fixed timecode scrubber (signature element) ---------------- */
+  .scrubber{
+    position:fixed;bottom:0;left:0;width:100%;z-index:500;
+    display:flex;align-items:center;gap:1rem;
+    padding:.85rem clamp(1rem,3vw,2rem);
+    background:linear-gradient(0deg, rgba(11,11,12,.95), rgba(11,11,12,0));
+    pointer-events:none;
+  }
+  .scrubber .tc-current{font-size:.75rem;letter-spacing:.05em;color:var(--signal);min-width:96px;}
+  .scrubber .tc-track{flex:1;height:1px;background:#2a2a2a;position:relative;}
+  .scrubber .tc-fill{position:absolute;left:0;top:0;height:100%;background:var(--signal);width:0%;}
+  .scrubber .tc-playhead{
+    position:absolute;top:50%;width:6px;height:6px;border-radius:50%;background:var(--bone);
+    transform:translate(-50%,-50%);left:0%;
+  }
+  .scrubber .tc-total{font-size:.75rem;letter-spacing:.05em;color:var(--graphite);min-width:96px;text-align:right;}
+
+  /* ---------------- top nav ---------------- */
+  header{
+    position:fixed;top:0;left:0;width:100%;z-index:400;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:1.6rem clamp(1rem,3vw,2rem);
+    mix-blend-mode:difference;
+  }
+  header .logo{font-weight:900;font-size:1.05rem;letter-spacing:-0.02em;}
+  header nav{display:flex;gap:2rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--graphite);}
+  header nav a:hover{color:var(--bone);}
+
+  section{position:relative;width:100%;}
+
+  /* ---------------- hero ---------------- */
+  .hero{
+    height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:0 clamp(1.2rem,4vw,4rem);position:relative;
+  }
+  .hero .kicker{
+    font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;color:var(--signal);
+    margin-bottom:1.2rem;
+  }
+  .hero h1{
+    font-size:clamp(2.8rem,9vw,7.5rem);font-weight:900;letter-spacing:-0.045em;line-height:.9;
+    max-width:14ch;
+  }
+  .hero h1 .word{display:inline-block;overflow:hidden;vertical-align:top;}
+  .hero h1 .word span{display:inline-block;transform:translateY(115%);filter:blur(6px);}
+  .hero .sub{
+    max-width:38ch;margin-top:1.8rem;color:var(--graphite);font-size:1rem;line-height:1.6;
+    opacity:0;transform:translateY(16px);
+  }
+  .hero .scroll-cue{
+    position:absolute;bottom:5.5rem;left:clamp(1.2rem,4vw,4rem);
+    font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--graphite);
+    display:flex;align-items:center;gap:.6rem;
+  }
+  .scroll-cue .dot{width:5px;height:5px;border-radius:50%;background:var(--signal);animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+  /* ---------------- marquee (clients) ---------------- */
+  .marquee-wrap{
+    border-top:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;
+    padding:1.4rem 0;overflow:hidden;white-space:nowrap;
+  }
+  .marquee-track{display:inline-flex;gap:3.5rem;animation:scroll-left 32s linear infinite;}
+  .marquee-track span{
+    font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;color:var(--graphite);
+    display:inline-flex;align-items:center;gap:3.5rem;
+  }
+  .marquee-track span em{font-style:normal;color:var(--bone);}
+  @keyframes scroll-left{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* ---------------- chaptered pin reveal ---------------- */
+  .pin-wrap{height:400vh;position:relative;}
+  .pin-stage{
+    height:100vh;position:sticky;top:0;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;background:var(--ink);
+  }
+  .pin-frame{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    clip-path:circle(0% at 50% 50%);
+    background:radial-gradient(ellipse at 30% 20%, #2a1310, #0b0b0c 60%);
+  }
+  .pin-frame .chapter{
+    position:absolute;text-align:center;opacity:0;
+  }
+  .pin-frame .chapter .tc-label{font-size:.7rem;letter-spacing:.2em;color:var(--signal);margin-bottom:1rem;}
+  .pin-frame .chapter h3{font-size:clamp(2rem,6vw,4.5rem);font-weight:900;letter-spacing:-0.03em;max-width:16ch;}
+  .pin-frame .chapter p{margin-top:.8rem;color:var(--graphite);font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;}
+  .pin-intro{position:absolute;text-align:center;z-index:2;}
+  .pin-intro h2{font-size:clamp(1.6rem,4.5vw,3rem);font-weight:800;letter-spacing:-0.03em;}
+  .pin-intro span{display:block;font-size:.7rem;letter-spacing:.3em;color:var(--graphite);margin-top:.7rem;}
+
+  /* ---------------- horizontal reel ---------------- */
+  .h-wrap{height:380vh;position:relative;}
+  .h-stage{height:100vh;position:sticky;top:0;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+  .h-heading{padding:0 clamp(1.2rem,4vw,4rem);margin-bottom:2.5rem;}
+  .h-heading .tc-label{font-size:.7rem;letter-spacing:.2em;color:var(--signal);}
+  .h-heading h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-top:.5rem;}
+  .h-track{display:flex;gap:1.6rem;padding-left:clamp(1.2rem,4vw,4rem);will-change:transform;}
+  .h-card{
+    flex:0 0 auto;width:min(30vw,420px);height:56vh;border-radius:2px;
+    background:linear-gradient(155deg,#1c1c1c,#0d0d0d);
+    display:flex;flex-direction:column;justify-content:flex-end;padding:1.6rem;
+    border:1px solid #232323;position:relative;overflow:hidden;
+  }
+  .h-card::before{
+    content:'';position:absolute;top:1.4rem;right:1.4rem;
+    width:8px;height:8px;border-radius:50%;background:var(--signal);
+  }
+  .h-card .genre{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--graphite);}
+  .h-card h3{font-size:1.4rem;font-weight:800;letter-spacing:-0.02em;margin-top:.5rem;line-height:1.15;}
+  .h-card .client{margin-top:.6rem;font-size:.75rem;color:var(--signal);letter-spacing:.05em;}
+
+  /* ---------------- statement ---------------- */
+  .statement{
+    min-height:90vh;display:flex;align-items:center;padding:6rem clamp(1.2rem,4vw,4rem);
+  }
+  .statement p{
+    font-size:clamp(1.7rem,4.2vw,3rem);font-weight:700;letter-spacing:-0.03em;
+    line-height:1.3;max-width:22ch;
+  }
+  .statement .word{display:inline-block;opacity:.12;filter:blur(3px);}
+
+  /* ---------------- awards ticker ---------------- */
+  .ticker-wrap{
+    border-top:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;
+    padding:1rem 0;overflow:hidden;white-space:nowrap;background:var(--reel);
+  }
+  .ticker-track{display:inline-flex;gap:4rem;animation:scroll-left 22s linear infinite reverse;}
+  .ticker-track span{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--graphite);}
+  .ticker-track span em{font-style:normal;color:var(--signal);}
+
+  /* ---------------- footer / cta ---------------- */
+  footer{padding:8rem clamp(1.2rem,4vw,4rem) 6rem;}
+  .cta-line{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--graphite);margin-bottom:1.5rem;}
+  .magnetic-btn{
+    display:inline-flex;align-items:center;gap:1rem;
+    font-size:clamp(2.2rem,7vw,5.5rem);font-weight:900;letter-spacing:-0.04em;
+    position:relative;
+  }
+  .magnetic-btn .btn-inner{display:inline-block;}
+  footer .details{
+    margin-top:4rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:2rem;
+    border-top:1px solid #1f1f1f;padding-top:2rem;
+    font-size:.85rem;color:var(--graphite);line-height:1.9;
+  }
+  footer .details b{color:var(--bone);display:block;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.5rem;}
+
+  @media (max-width:700px){
+    .h-card{width:78vw;}
+    .scrubber .tc-current, .scrubber .tc-total{min-width:70px;font-size:.6rem;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="grain" width="100%" height="100%">
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="preloader" id="preloader">
+  <div class="tc mono" id="preTc">00:00:00:00</div>
+  <div class="bar"><div class="bar-fill" id="preBar"></div></div>
+  <div class="label">Rendering Preview</div>
+</div>
+
+<div class="scrubber">
+  <span class="tc-current mono" id="tcCurrent">00:00:00:00</span>
+  <div class="tc-track"><div class="tc-fill" id="tcFill"></div><div class="tc-playhead" id="tcPlayhead"></div></div>
+  <span class="tc-total mono">RUNTIME 00:04:12:00</span>
+</div>
+
+<header>
+  <div class="logo">AFTERGLOW</div>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#studio">Studio</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="kicker mono">Afterglow — Edit &amp; Post House</div>
+  <h1 id="heroTitle">
+    <div class="word"><span>WE</span></div>
+    <div class="word"><span>CUT</span></div>
+    <div class="word"><span>STORIES</span></div>
+    <div class="word"><span>THAT</span></div>
+    <div class="word"><span>MOVE.</span></div>
+  </h1>
+  <p class="sub" id="heroSub">Documentary, sports, reality and ad-film editing for Netflix, National Geographic, Discovery, Mercedes-Benz and Formula 1 — cut frame by frame until the story finds its shape.</p>
+  <div class="scroll-cue"><span class="dot"></span> Scroll to play</div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track mono">
+    <span><em>Netflix</em> · National Geographic · Discovery · Mercedes-Benz · Formula 1 · L'Oréal Paris · Prime Video · Disney+ Hotstar · JioCinema · Fox Life · Star Sports · Colors HD · Olympic Channel</span>
+    <span><em>Netflix</em> · National Geographic · Discovery · Mercedes-Benz · Formula 1 · L'Oréal Paris · Prime Video · Disney+ Hotstar · JioCinema · Fox Life · Star Sports · Colors HD · Olympic Channel</span>
+  </div>
+</div>
+
+<div class="pin-wrap" id="studio">
+  <div class="pin-stage">
+    <div class="pin-intro" id="pinIntro">
+      <h2>Every frame is<br>a decision.</h2>
+      <span>Scroll to keep rolling</span>
+    </div>
+    <div class="pin-frame" id="pinFrame">
+      <div class="chapter" id="ch1">
+        <div class="tc-label mono">00:01:04:12 — DOCUMENTARY</div>
+        <h3>National Geographic trusted us with Tarini.</h3>
+        <p>Asian Television Awards — Best Editor Nominee</p>
+      </div>
+      <div class="chapter" id="ch2">
+        <div class="tc-label mono">00:02:18:03 — MOTORSPORT</div>
+        <h3>Formula 1 needed a movie that moved like the race.</h3>
+        <p>Abu Dhabi Grand Prix — After Movie</p>
+      </div>
+      <div class="chapter" id="ch3">
+        <div class="tc-label mono">00:03:22:19 — REALITY</div>
+        <h3>Netflix wanted a world that felt lived-in.</h3>
+        <p>Fabulous Lives of Bollywood Wives</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h-wrap" id="work">
+  <div class="h-stage">
+    <div class="h-heading">
+      <div class="tc-label mono">00:00:41:07 — SELECTED WORK</div>
+      <h2>The Reel</h2>
+    </div>
+    <div class="h-track" id="hTrack">
+      <div class="h-card"><span class="genre">Documentary Series</span><h3>The Greatest Rivalry</h3><span class="client">Netflix</span></div>
+      <div class="h-card"><span class="genre">Documentary Film</span><h3>Tarini</h3><span class="client">National Geographic</span></div>
+      <div class="h-card"><span class="genre">Reality Series</span><h3>Fabulous Lives of Bollywood Wives</h3><span class="client">Netflix</span></div>
+      <div class="h-card"><span class="genre">Travel Series</span><h3>Great Overland Adventure 2</h3><span class="client">Mercedes-Benz</span></div>
+      <div class="h-card"><span class="genre">Motorsport Film</span><h3>Formula 1 After Movie</h3><span class="client">Abu Dhabi Grand Prix</span></div>
+      <div class="h-card"><span class="genre">Live Sports</span><h3>ICC Cricket World Cup 2015</h3><span class="client">Star Sports</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="statement">
+  <p id="statementText">Twenty three genres. One instinct — find the cut that makes people feel something.</p>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-track mono">
+    <span><em>Award —</em> Best Editor Nominee, Tarini, 24th Asian Television Awards 2019</span>
+    <span><em>Client —</em> Netflix</span>
+    <span><em>Client —</em> National Geographic</span>
+    <span><em>Client —</em> Discovery Channel</span>
+    <span><em>Client —</em> Mercedes-Benz</span>
+    <span><em>Award —</em> Best Editor Nominee, Tarini, 24th Asian Television Awards 2019</span>
+    <span><em>Client —</em> Netflix</span>
+    <span><em>Client —</em> National Geographic</span>
+    <span><em>Client —</em> Discovery Channel</span>
+    <span><em>Client —</em> Mercedes-Benz</span>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="cta-line mono">00:04:08:00 — Start a project</div>
+  <a href="mailto:hello@afterglow.studio" class="magnetic-btn" id="magBtn">
+    <span class="btn-inner">Let's cut →</span>
+  </a>
+  <div class="details">
+    <div><b>Contact</b>hello@afterglow.studio<br>+91 98464 97008</div>
+    <div><b>Studio</b>Kochi, Kerala<br>Working worldwide</div>
+    <div><b>Follow</b>Instagram<br>Vimeo · IMDb</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------------- preloader with fake timecode count-up ---------------- */
+const preTc = document.getElementById('preTc');
+const preBar = document.getElementById('preBar');
+const preloader = document.getElementById('preloader');
+let frames = 0;
+const totalFrames = 96; // ~4 seconds at 24fps feel
+function fmtTC(f){
+  const ff = f % 24;
+  const ss = Math.floor(f/24) % 60;
+  return `00:00:${String(ss).padStart(2,'0')}:${String(ff).padStart(2,'0')}`;
+}
+const loadInterval = setInterval(() => {
+  frames += Math.ceil(Math.random()*6)+2;
+  if(frames >= totalFrames){
+    frames = totalFrames;
+    preTc.textContent = fmtTC(frames);
+    preBar.style.width = '100%';
+    clearInterval(loadInterval);
+    gsap.to(preloader, {
+      yPercent:-100, duration:1, ease:'var(--ease-out)', delay:.25,
+      onComplete: () => { preloader.style.display='none'; playIntro(); initScroll(); }
+    });
+  } else {
+    preTc.textContent = fmtTC(frames);
+    preBar.style.width = (frames/totalFrames*100) + '%';
+  }
+}, 90);
+
+/* ---------------- custom cursor (dot + lagging ring) ---------------- */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0, rx=0, ry=0;
+window.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+gsap.ticker.add(() => {
+  rx += (mx-rx)*0.15; ry += (my-ry)*0.15;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+});
+document.querySelectorAll('a, .magnetic-btn').forEach(el=>{
+  el.addEventListener('mouseenter', ()=> ring.style.transform='translate(-50%,-50%) scale(1.8)');
+  el.addEventListener('mouseleave', ()=> ring.style.transform='translate(-50%,-50%) scale(1)');
+});
+
+/* ---------------- magnetic button ---------------- */
+const magBtn = document.getElementById('magBtn');
+const btnInner = magBtn.querySelector('.btn-inner');
+magBtn.addEventListener('mousemove', e => {
+  const r = magBtn.getBoundingClientRect();
+  const relX = e.clientX - r.left - r.width/2;
+  const relY = e.clientY - r.top - r.height/2;
+  gsap.to(btnInner, { x: relX*0.25, y: relY*0.35, duration:.4, ease:'power3.out' });
+});
+magBtn.addEventListener('mouseleave', () => gsap.to(btnInner, { x:0, y:0, duration:.5, ease:'elastic.out(1,0.4)' }));
+
+/* ---------------- hand-rolled smooth scroll (swap for real Lenis in production) ---------------- */
+let current=0, target=0, ease=0.09;
+function smoothScroll(){
+  target = window.scrollY;
+  current += (target-current)*ease;
+  ScrollTrigger.update();
+  requestAnimationFrame(smoothScroll);
+}
+
+function playIntro(){
+  gsap.to('.hero h1 .word span', { yPercent:0, filter:'blur(0px)', duration:1.1, ease:'power4.out', stagger:.08, delay:.1 });
+  gsap.to('#heroSub', { opacity:1, y:0, duration:1, ease:'power3.out', delay:.55 });
+}
+
+function initScroll(){
+  requestAnimationFrame(smoothScroll);
+
+  /* ---- global scrubber tied to full page scroll progress ---- */
+  const totalRuntimeFrames = 4*60*24 + 12*24; // fake "00:04:12:00" in frames @24fps
+  ScrollTrigger.create({
+    trigger: document.body, start: 'top top', end: 'bottom bottom',
+    onUpdate: self => {
+      const p = self.progress;
+      document.getElementById('tcFill').style.width = (p*100)+'%';
+      document.getElementById('tcPlayhead').style.left = (p*100)+'%';
+      const f = Math.floor(p * totalRuntimeFrames);
+      const ff = f % 24;
+      const totalSec = Math.floor(f/24);
+      const ss = totalSec % 60;
+      const mm = Math.floor(totalSec/60) % 60;
+      document.getElementById('tcCurrent').textContent =
+        `00:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}:${String(ff).padStart(2,'0')}`;
+    }
+  });
+
+  /* ---- chaptered pin reveal ---- */
+  const pinTl = gsap.timeline({
+    scrollTrigger: { trigger:'.pin-wrap', start:'top top', end:'bottom bottom', scrub:1, pin:'.pin-stage' }
+  });
+  pinTl
+    .to('#pinIntro', { opacity:0, scale:.85, duration:.5 })
+    .to('#pinFrame', { clipPath:'circle(140% at 50% 50%)', duration:1.5 }, '<')
+    .fromTo('#ch1', {opacity:0,y:30}, {opacity:1,y:0,duration:.6}, '-=0.6')
+    .to('#ch1', {opacity:0,y:-30,duration:.5}, '+=0.6')
+    .fromTo('#ch2', {opacity:0,y:30}, {opacity:1,y:0,duration:.6}, '<')
+    .to('#ch2', {opacity:0,y:-30,duration:.5}, '+=0.6')
+    .fromTo('#ch3', {opacity:0,y:30}, {opacity:1,y:0,duration:.6}, '<')
+    .to('#ch3', {opacity:0,y:-30,duration:.5}, '+=0.4');
+
+  /* ---- horizontal reel driven by vertical scroll ---- */
+  const track = document.getElementById('hTrack');
+  gsap.to(track, {
+    x: () => -(track.scrollWidth - window.innerWidth + 100),
+    ease: 'none',
+    scrollTrigger: { trigger:'.h-wrap', start:'top top', end:'bottom bottom', scrub:1 }
+  });
+  gsap.utils.toArray('.h-card').forEach(card=>{
+    gsap.fromTo(card, { opacity:.35 }, {
+      opacity:1, ease:'none',
+      scrollTrigger:{ trigger:card, containerAnimation: gsap.getById && undefined, start:'left 90%', end:'left 40%', scrub:true, horizontal:false }
+    });
+  });
+
+  /* ---- statement word reveal ---- */
+  const statementEl = document.getElementById('statementText');
+  statementEl.innerHTML = statementEl.textContent.split(' ').map(w=>`<span class="word">${w}</span>`).join(' ');
+  gsap.to('.statement .word', {
+    opacity:1, filter:'blur(0px)', stagger:.06,
+    scrollTrigger:{ trigger:'.statement', start:'top 75%', end:'bottom 65%', scrub:1 }
+  });
+}
+</script>
+</body>
+</html>                                                                                 

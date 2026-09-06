@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Partners | Triangle Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F4F0;
+    --paper-deep:#E9EBE5;
+    --ink:#141714;
+    --green:#157A50;
+    --green-deep:#0D4A31;
+    --line:#D3D6CE;
+    --dim:#6E736C;
+    --maxw:1060px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Archivo',sans-serif;font-size:17px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+  header{
+    border-bottom:1px solid var(--line);position:sticky;top:0;
+    background:rgba(243,244,240,.92);backdrop-filter:blur(8px);z-index:20;
+  }
+  .head-in{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .wordmark{
+    font-family:'Marcellus',serif;font-size:15px;letter-spacing:.32em;
+    text-transform:uppercase;color:var(--ink);text-decoration:none;
+    display:flex;align-items:center;gap:12px;
+  }
+  .head-tc{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--dim);}
+  .head-tc b{color:var(--green);font-weight:500;}
+
+  /* hero */
+  .hero{padding:92px 0 76px;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:60px;align-items:center;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--green);margin-bottom:22px;
+  }
+  h1{font-family:'Marcellus',serif;font-weight:400;font-size:clamp(40px,6.4vw,68px);line-height:1.06;}
+  .hero-hook{
+    margin-top:30px;font-family:'Marcellus',serif;
+    font-size:clamp(19px,2.4vw,23px);line-height:1.48;color:var(--green-deep);max-width:38ch;
+  }
+
+  /* interactive triangle */
+  .tri-wrap{display:flex;flex-direction:column;align-items:center;}
+  .tri-wrap svg{width:100%;max-width:300px;height:auto;overflow:visible;}
+  .tri-edge{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:square;}
+  .tri-arc{fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:3 6;stroke-linecap:round;}
+  .vtx{fill:var(--paper);stroke:var(--ink);stroke-width:2.5;transition:fill .25s ease,stroke .25s ease,r .25s ease;}
+  .vtx.lit{fill:var(--green-deep);stroke:var(--green-deep);}
+  .vtx-label{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;
+    fill:var(--dim);text-transform:uppercase;transition:fill .25s ease;
+  }
+  .vtx-label.lit{fill:var(--green-deep);}
+  .tri-caption{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--dim);text-align:center;margin-top:18px;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .tri-edge{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.6s ease forwards .2s;}
+    .tri-arc{opacity:0;animation:fadein .8s ease forwards 1.5s;}
+    @keyframes draw{to{stroke-dashoffset:0;}}
+    @keyframes fadein{to{opacity:1;}}
+  }
+
+  section{padding:70px 0;border-top:1px solid var(--line);}
+  .sec-label{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;}
+  .sec-label h2{font-family:'Marcellus',serif;font-weight:400;font-size:clamp(26px,3.4vw,34px);}
+  .sec-label .tc{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);letter-spacing:.1em;}
+
+  /* origin */
+  .origin{display:grid;grid-template-columns:1fr 1fr;gap:56px;}
+  .origin p{margin-bottom:1.2em;max-width:56ch;}
+  .origin p:last-child{margin-bottom:0;}
+  .origin .lede{font-size:19px;font-weight:500;}
+  .origin em{font-style:normal;color:var(--green-deep);font-weight:600;}
+  .origin-card{
+    align-self:start;background:var(--paper-deep);border:1px solid var(--line);padding:30px;
+  }
+  .origin-card dl{display:grid;gap:18px;}
+  .origin-card dt{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:4px;
+  }
+  .origin-card dd{font-size:15.5px;line-height:1.5;}
+
+  /* partners */
+  .partner{
+    display:grid;grid-template-columns:180px minmax(0,1fr);gap:44px;
+    padding:44px 0;border-bottom:1px solid var(--line);
+  }
+  .partner:first-of-type{border-top:1px solid var(--ink);}
+  .p-side{position:relative;}
+  .p-corner{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--green);margin-bottom:14px;
+  }
+  .p-name{font-family:'Marcellus',serif;font-size:27px;line-height:1.15;}
+  .p-role{
+    margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1.7;
+  }
+  .p-bio p{margin-bottom:1.05em;max-width:60ch;}
+  .p-bio strong{font-family:'Marcellus',serif;font-weight:400;font-size:19px;
+    color:var(--green-deep);display:block;margin-bottom:8px;}
+  .p-bio p:last-of-type{margin-bottom:0;}
+  .p-flag{
+    display:inline-block;margin-top:16px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+    color:var(--paper);background:var(--green-deep);padding:4px 10px;
+  }
+  .p-links{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 22px;}
+  .p-links a{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;
+    color:var(--ink);text-decoration:none;border-bottom:1px solid var(--green);padding-bottom:2px;
+    transition:color .2s ease;
+  }
+  .p-links a:hover{color:var(--green);}
+
+  /* how we work */
+  .work-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);}
+  .work-grid div{
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 24px;
+  }
+  .work-grid h3{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--green);font-weight:500;margin-bottom:12px;
+  }
+  .work-grid p{font-size:15.5px;line-height:1.55;}
+
+  footer{padding:70px 0 58px;}
+  .foot-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;}
+  .foot-cta{font-family:'Marcellus',serif;font-size:clamp(25px,3.8vw,38px);line-height:1.2;max-width:20ch;}
+  .foot-links{display:grid;gap:8px;text-align:right;}
+  .foot-links a{
+    color:var(--ink);text-decoration:none;font-family:'JetBrains Mono',monospace;
+    font-size:13px;letter-spacing:.06em;border-bottom:1px solid var(--green);
+    padding-bottom:2px;transition:color .2s ease;
+  }
+  .foot-links a:hover{color:var(--green);}
+  .foot-base{
+    margin-top:52px;padding-top:20px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  }
+
+  .imgslot{background:var(--paper-deep);border:1px dashed #B9BDB3;display:flex;
+    align-items:center;justify-content:center;text-align:center;padding:26px;min-height:260px;margin-top:34px;}
+  .imgslot span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);line-height:1.9;max-width:34ch;}
+
+
+  .note-band{background:var(--paper-deep);border-top:1px solid var(--line);padding:76px 0;}
+  .ntag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--green);margin-bottom:36px;}
+  .ngrid{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;}
+  .nbody p{margin-bottom:1.1em;max-width:48ch;}
+  .nlede{font-family:'Marcellus',serif;font-size:clamp(21px,2.7vw,27px);line-height:1.4;
+    color:var(--green-deep);}
+  .nclose{font-family:'Marcellus',serif;font-size:19px;color:var(--ink);margin-top:22px;}
+  .nvision{border-left:1px solid var(--line);padding-left:40px;}
+  .vlab{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:18px;}
+  .nvision p{margin-bottom:1em;font-size:16px;line-height:1.6;max-width:40ch;}
+  .vkick{font-family:'Marcellus',serif;font-size:20px;color:var(--green-deep);margin-top:20px;}
+  .nsign{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);}
+  @media (max-width:860px){
+    .ngrid{grid-template-columns:1fr;gap:36px;}
+    .nvision{border-left:none;border-top:1px solid var(--line);padding-left:0;padding-top:32px;}
+  }
+
+  a:focus-visible{outline:2px solid var(--green);outline-offset:3px;}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+  .reveal.on{opacity:1;transform:none;}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;gap:44px;padding:60px 0 52px;}
+    .tri-wrap{order:-1;}
+    .tri-wrap svg{max-width:210px;}
+    .origin{grid-template-columns:1fr;gap:38px;}
+    .partner{grid-template-columns:1fr;gap:22px;padding:38px 0;}
+    .work-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr;}
+    .foot-links{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-in">
+    <a class="wordmark" href="#">
+      <svg width="22" height="20" viewBox="0 0 44 40" aria-hidden="true">
+        <path d="M22 3 L41 37 H14" fill="none" stroke="#141714" stroke-width="2.5"/>
+        <path d="M14 37 A 11 11 0 0 1 6 26" fill="none" stroke="#157A50" stroke-width="2" stroke-dasharray="2 4"/>
+      </svg>
+      Triangle Room
+    </a>
+    <div class="head-tc">THE <b>PARTNERS</b></div>
+  </div>
+</header>
+
+<main>
+
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">Three partners</div>
+      <h1>The room,<br>and the three<br>who built it</h1>
+      <p class="hero-hook">One shape. Three corners. Story, production and post, held by the people who do the work.</p>
+    </div>
+    <div class="tri-wrap">
+      <svg viewBox="0 0 220 200" role="img" aria-label="Triangle mark with a corner for each partner">
+        <path class="tri-edge" d="M110 24 L190 172 H30 Z"/>
+        <path class="tri-arc" d="M30 172 A 44 44 0 0 1 -3 130"/>
+        <circle class="vtx" id="v-anu" cx="110" cy="24" r="7"/>
+        <circle class="vtx" id="v-jibin" cx="190" cy="172" r="7"/>
+        <circle class="vtx" id="v-midhuna" cx="30" cy="172" r="7"/>
+        <text class="vtx-label" id="l-anu" x="110" y="8" text-anchor="middle">Anu</text>
+        <text class="vtx-label" id="l-jibin" x="196" y="192" text-anchor="end">Jibin</text>
+        <text class="vtx-label" id="l-midhuna" x="24" y="192" text-anchor="start">Midhuna</text>
+      </svg>
+      <div class="tri-caption">The room. Trivandrum, 2008.</div>
+    </div>
+  </div>
+
+  <!-- ORIGIN -->
+  <section>
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">01</span><h2>The room</h2></div>
+      <div class="origin">
+        <div class="reveal">
+          <p class="lede">There was a small triangle shaped room in Trivandrum. Anu lived and worked in it while he was learning to edit, and then all the way through college at Mar Ivanios.</p>
+          <p>Midhuna and Jibin were his classmates. The three of them used to assemble in that room to make things, and to talk about the things they wanted to make one day. Almost none of it got made, because nobody had any money and nobody was giving three students a commission.</p>
+          <p>Then everyone left for work and spent fifteen years learning the business from inside other people's shows. <em>The company is named after the room because that is where it actually started.</em></p>
+        </div>
+        <aside class="origin-card reveal">
+          <dl>
+            <div><dt>Directors</dt><dd>Anu Kamala, Midhuna Pichy, Jibin Babu</dd></div>
+            <div><dt>Met at</dt><dd>Mar Ivanios College, Trivandrum</dd></div>
+            <div><dt>Named after</dt><dd>The room the three of us worked out of as students</dd></div>
+            <div><dt>Base</dt><dd>Trivandrum, Kerala</dd></div>
+            <div><dt>Between us</dt><dd>Three careers across broadcast, streaming, audio and ad film</dd></div>
+            <div><dt>Working across</dt><dd>Documentary, reality formats, features, ad film</dd></div>
+          </dl>
+        </aside>
+      </div>
+      <div class="imgslot reveal"><span>Photograph of the room, or the three of you in it</span></div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">02</span><h2>The Partners</h2></div>
+
+      <div class="partner reveal" data-vtx="anu">
+        <div class="p-side">
+          <div class="p-corner">Corner 01</div>
+          <div class="p-name">Anu Kamala</div>
+          <div class="p-role">Director<br><span style="color:var(--green)">Story and Post</span></div>
+        </div>
+        <div class="p-bio">
+          <p><strong>Anu believes stories are rewritten in the edit room.</strong> He has spent eighteen years there, cutting documentary series, reality formats, travel shows and live sport for Netflix, National Geographic, Discovery, Olympic Channel, Prime Video and Star Sports.</p>
+          <p>In unscripted, that has never only meant cutting. Finding the arc inside three hundred hours of rushes, restructuring episodes after the shoot is over, rewriting a series so it holds. On most of his projects that work has been creative producing without the credit, which is the ordinary arrangement in non-fiction and the reason he now wants to develop his own.</p>
+          <p>He was series editor on The Greatest Rivalry for Netflix, chief editor on Doubles Trouble for Olympic Channel, and film editor on Tarini: The Goddess and the Sea for National Geographic. Across eighteen years the work has run regional, national and international, across languages and across formats: India From Above for National Geographic in the UK, The Greatest 2 Minutes in Sports for the US market, social content cut in Paris for Jellysmack and in London for Glassworks. He now develops and directs original work at Triangle Room.</p>
+          <span class="p-flag">BEST EDITOR NOMINATION / ASIAN TELEVISION AWARDS 2019</span>
+          <div class="p-links">
+            <a href="https://editoranukamala.myportfolio.com/work" target="_blank" rel="noopener">Portfolio</a>
+            <a href="https://www.linkedin.com/in/anu-kamala-4a755496/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:editoranu@gmail.com">Email</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="partner reveal" data-vtx="jibin">
+        <div class="p-side">
+          <div class="p-corner">Corner 02</div>
+          <div class="p-name">Jibin Babu</div>
+          <div class="p-role">Director<br><span style="color:var(--green)">Development and Writing</span></div>
+        </div>
+        <div class="p-bio">
+          <p><strong>Jibin writes the thing before anyone knows it is a thing.</strong> Over nine years across television, audio, film and digital content, he has developed and led production on more than twelve television shows, including Music Mojo Season 7 for Kappa TV, Autumn Leaf The Big Stage, and reality formats for Amrita TV.</p>
+          <p>His own work runs to fiction. He has written and directed audio series for Pratilipi FM and co-created short films, mini web series and ad films. He is currently co-writing a feature screenplay.</p>
+          <span class="p-flag">TWO KERALA STATE AWARDS / PACHAMARAKAIKAL</span>
+          <div class="p-links">
+            <a href="https://www.youtube.com/watch?v=eGk5fcfTR0Q" target="_blank" rel="noopener">Music Mojo</a>
+            <a href="https://www.youtube.com/watch?v=KUFKX5v3UUY" target="_blank" rel="noopener">Autumn Leaf</a>
+            <a href="https://www.youtube.com/watch?v=0FyX0QoBk14" target="_blank" rel="noopener">Music video</a>
+            <a href="https://www.youtube.com/watch?v=xBCcTMCkoDc" target="_blank" rel="noopener">Selected work</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="partner reveal" data-vtx="midhuna">
+        <div class="p-side">
+          <div class="p-corner">Corner 03</div>
+          <div class="p-name">Midhuna Pichy</div>
+          <div class="p-role">Director<br><span style="color:var(--green)">Production and Delivery</span></div>
+        </div>
+        <div class="p-bio">
+          <p><strong>Midhuna makes ambitious shows actually happen.</strong> Eleven years producing television, reality and ad film across Mumbai, Hyderabad, Chennai and Kerala. She has worked three seasons of Bigg Boss Malayalam for Asianet and Endemol Shine India, moving from episode producer on Season 1 to post producer on Season 3 to creative producer on Season 4, alongside seven other international reality formats and ad films for HP, Platinum and Exide.</p>
+          <p>Her specialism is the daily reality pipeline. Twenty four hours of rushes cut down to two, then to one hour of prime time, delivered on schedule every single day. It is a job of making the right call continuously under pressure, and of running a team so those calls get made and the show goes out.</p>
+          <p>Her earlier work runs through Big Synergy Media Ltd on Kaun Banega Crorepati, Dus Ka Dum, People's Choice, Sell Me The Answer and Fastest Family First, and through MTV and Endemol Shine India on Ace of Space. She has developed shows for the south region at Studio Next, Sony Pictures.</p>
+          <span class="p-flag">M.A. COMMUNICATION / HYDERABAD CENTRAL UNIVERSITY</span>
+          <div class="p-links">
+            <a href="https://www.linkedin.com/in/midhuna-pichy-9944278b" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:psmidhuna@gmail.com">Email</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW WE WORK -->
+  <section>
+    <div class="wrap">
+      <div class="sec-label"><span class="tc">03</span><h2>How the room works</h2></div>
+      <div class="work-grid reveal">
+        <div>
+          <h3>Story first</h3>
+          <p>Every project starts as a story problem, not a format problem. If it does not hold in one sentence, it does not go into development.</p>
+        </div>
+        <div>
+          <h3>Built to deliver</h3>
+          <p>Between the three of us we have run development, live production and post on shows at broadcast scale. We pitch what we know we can make.</p>
+        </div>
+        <div>
+          <h3>Kerala, not limited to it</h3>
+          <p>Our stories come from where we are from. The audience does not have to.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOUNDERS NOTE -->
+  <div class="note-band">
+    <div class="wrap">
+      <div class="ntag">Our note to you</div>
+      <div class="ngrid">
+        <div class="nbody">
+          <p class="nlede">In the heart of every great story lies a meeting point of minds, of moments, of meaning. Triangle Room was born at such a point.</p>
+          <p>Three college mates turned storytellers. The triangle is the bond: three corners, each unique, each part of one strong shape. The room is where it begins, the brainstorming, the chaos, the creation.</p>
+          <p>We are here to craft films that are not just seen but felt. Stories that are rooted yet boundless, local yet universal.</p>
+          <p class="nclose">Welcome to the room where imagination finds its edge.</p>
+        </div>
+        <div class="nvision">
+          <div class="vlab">Our vision</div>
+          <p>To make work that lingers long after the credits roll. Stories that challenge, comfort and change the way we see the world.</p>
+          <p>Bold in form. Rich in feeling. Timeless in impact.</p>
+          <p class="vkick">We do not just make films. We carve them.</p>
+          <div class="nsign">Anu Kamala / Midhuna Pichy / Jibin Babu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-cta">We started in one room. Now we would like to fill it with your work.</div>
+      <div class="foot-links">
+        <a href="mailto:connect@triangleroom.in">connect@triangleroom.in</a>
+        <a href="tel:+919846497008">+91 98464 97008</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Triangle Room</span>
+      <span>Trivandrum, Kerala</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  document.querySelectorAll('.partner').forEach(card=>{
+    const key = card.dataset.vtx;
+    const dot = document.getElementById('v-'+key);
+    const lab = document.getElementById('l-'+key);
+    const on  = ()=>{ dot.classList.add('lit'); lab.classList.add('lit'); };
+    const off = ()=>{ dot.classList.remove('lit'); lab.classList.remove('lit'); };
+    card.addEventListener('mouseenter',on);
+    card.addEventListener('mouseleave',off);
+    card.addEventListener('focusin',on);
+    card.addEventListener('focusout',off);
+  });
+</script>
+
+</body>
+</html>
