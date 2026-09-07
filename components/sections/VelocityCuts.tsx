@@ -142,7 +142,7 @@ export default function VelocityCuts() {
       }
 
       // Read scroll velocity
-      const vel = Math.abs(ScrollTrigger.getVelocity())
+      const vel = Math.abs((ScrollTrigger as any).getVelocity())
 
       // Update velocity bar (subtle editorial meter at section bottom)
       if (velBarRef.current) {

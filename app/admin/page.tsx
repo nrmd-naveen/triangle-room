@@ -287,8 +287,8 @@ function ImgField({ label, hint, value, onChange, upload, prefix = 'uploads', ra
 function MoveButtons({ onUp, onDown }: { onUp: () => void; onDown: () => void }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <button onClick={onUp}   className="text-xs text-gray-400 hover:text-gray-700 px-1 leading-tight transition-colors">↑</button>
-      <button onClick={onDown} className="text-xs text-gray-400 hover:text-gray-700 px-1 leading-tight transition-colors">↓</button>
+      <button onClick={e => { e.stopPropagation(); onUp() }}   className="text-xs text-gray-400 hover:text-gray-700 px-1 leading-tight transition-colors">↑</button>
+      <button onClick={e => { e.stopPropagation(); onDown() }} className="text-xs text-gray-400 hover:text-gray-700 px-1 leading-tight transition-colors">↓</button>
     </div>
   )
 }
@@ -613,7 +613,7 @@ function WorksSection({ config, onSave, upload }: { config: SiteConfig; onSave: 
               </div>
               <span className="text-xs text-gray-400 shrink-0 hidden sm:block">{w.category}</span>
               <span className="text-xs text-gray-400 shrink-0">{w.srcs.length} img{w.srcs.length !== 1 ? 's' : ''}</span>
-              <MoveButtons onUp={e => { (e as unknown as React.MouseEvent).stopPropagation(); moveWork(i, -1) }} onDown={e => { (e as unknown as React.MouseEvent).stopPropagation(); moveWork(i, 1) }} />
+              <MoveButtons onUp={() => moveWork(i, -1)} onDown={() => moveWork(i, 1)} />
               <span className="text-gray-400 text-sm shrink-0">{expanded === i ? '−' : '+'}</span>
             </div>
 
