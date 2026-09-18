@@ -884,9 +884,7 @@ function PasswordGate({ onLogin, loading, error }: { onLogin: (pw: string) => vo
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8 w-full max-w-sm">
         <div className="mb-6">
           <div className="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center mb-4">
-            <svg viewBox="0 0 32 28" className="w-5 h-5" aria-hidden>
-              <polygon points="16,2 30,26 2,26" fill="none" stroke="white" strokeWidth="2" />
-            </svg>
+            <img src="/brand/mark-white.svg" alt="" className="w-5 h-5 object-contain" />
           </div>
           <h1 className="text-xl font-semibold text-gray-900">Triangle Room</h1>
           <p className="text-sm text-gray-500 mt-1">Admin Console</p>
@@ -965,9 +963,7 @@ export default function AdminPage() {
         <div className="px-5 py-5 border-b border-gray-800">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 bg-gray-700 rounded flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 32 28" className="w-4 h-4" aria-hidden>
-                <polygon points="16,2 30,26 2,26" fill="none" stroke="white" strokeWidth="2" />
-              </svg>
+              <img src="/brand/mark-white.svg" alt="" className="w-4 h-4 object-contain" />
             </div>
             <div>
               <p className="text-sm font-medium text-white leading-tight">Triangle Room</p>
