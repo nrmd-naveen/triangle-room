@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import MobileMenuPanel from './MobileMenuPanel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,6 +23,8 @@ interface NavProps {
 export default function Nav({ isLoaded }: NavProps) {
   const [onDark, setOnDark] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
 
   // Track scroll depth for bg
   useEffect(() => {
@@ -37,14 +40,16 @@ export default function Nav({ isLoaded }: NavProps) {
   useEffect(() => {
     if (!isLoaded) return
 
-    const NAV_H = 60
-
     const update = () => {
+      // Actual rendered height, since the bar is ~68px on mobile/tablet
+      // and 90px from the lg breakpoint up.
+      const navH = headerRef.current?.offsetHeight ?? 90
+
       // ── #directors: dark section before work (bounding rect) ────────────
       const directorsEl = document.querySelector<HTMLElement>('#directors')
       const inDirectors = !!directorsEl && (() => {
         const r = directorsEl.getBoundingClientRect()
-        return r.top <= NAV_H && r.bottom > NAV_H
+        return r.top <= navH && r.bottom > navH
       })()
 
       // ── From #work onwards: no light sections follow, stay dark ──────────
@@ -53,7 +58,7 @@ export default function Nav({ isLoaded }: NavProps) {
       if (workEl) {
         const pinST = ScrollTrigger.getAll().find((st) => st.trigger === workEl)
         const workStart = pinST ? pinST.start : workEl.offsetTop
-        pastWorkStart = window.scrollY >= workStart - NAV_H
+        pastWorkStart = window.scrollY >= workStart - navH
       }
 
       setOnDark(inDirectors || pastWorkStart)
@@ -64,34 +69,75 @@ export default function Nav({ isLoaded }: NavProps) {
     return () => window.removeEventListener('scroll', update)
   }, [isLoaded])
 
-  const textColor  = onDark ? 'text-fg/80'   : 'text-ink/80'
+  // The mobile overlay always sits on a dark panel, so force the light
+  // logo/hamburger treatment while it's open regardless of scroll position.
+  const showLight  = onDark || menuOpen
   const linkColor  = onDark ? 'text-fg/40 hover:text-fg' : 'text-muted hover:text-ink'
+  const lineColor  = menuOpen ? 'bg-fg' : showLight ? 'bg-fg/80' : 'bg-ink/80'
   const bgClass    = scrolled && !onDark
     ? 'bg-bg/90 backdrop-blur-md border-b border-border'
     : 'bg-transparent'
 
   return (
-    <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-12 py-5 transition-colors duration-500 ${bgClass}`}
-      initial={{ opacity: 0, y: -16 }}
-      animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
-      transition={{ duration: 0.9, ease }}
-    >
-      <span className={`font-mono text-[11px] tracking-[0.32em] uppercase transition-colors duration-500 ${textColor}`}>
-        Triangle Room
-      </span>
+    <>
+      <motion.header
+        ref={headerRef}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 lg:px-10 py-4 lg:py-0 transition-colors duration-500 ${bgClass}`}
+        initial={{ opacity: 0, y: -16 }}
+        animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
+        transition={{ duration: 0.9, ease }}
+      >
+        <a
+          href="/"
+          className="relative block h-9 sm:h-11 lg:h-[90px] aspect-[5.17] shrink-0"
+          aria-label="Triangle Room — home"
+          onClick={() => setMenuOpen(false)}
+        >
+          <img
+            src="/brand/wordmark-black.svg"
+            alt=""
+            className="absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-500"
+            style={{ opacity: showLight ? 0 : 0.8 }}
+          />
+          <img
+            src="/brand/wordmark-white.svg"
+            alt="Triangle Room"
+            className="absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-500"
+            style={{ opacity: showLight ? 0.8 : 0 }}
+          />
+        </a>
 
-      <nav className="hidden md:flex items-center gap-8">
-        {NAV_LINKS.map(({ label, href }) => (
-          <a
-            key={label}
-            href={href}
-            className={`font-mono text-[10px] tracking-[0.22em] uppercase transition-colors duration-300 ${linkColor}`}
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
-    </motion.header>
+        <nav className="hidden lg:flex items-center gap-16">
+          {NAV_LINKS.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className={`font-display font-medium text-[14px] tracking-[0.12em] uppercase transition-colors duration-300 ${linkColor}`}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        <button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          className="relative z-[60] flex h-9 w-9 shrink-0 flex-col items-center justify-center gap-[5px] lg:hidden"
+        >
+          <span
+            className={`block h-px w-5 transition-all duration-300 ${lineColor}`}
+            style={{ transform: menuOpen ? 'translateY(3px) rotate(45deg)' : 'none' }}
+          />
+          <span
+            className={`block h-px w-5 transition-all duration-300 ${lineColor}`}
+            style={{ transform: menuOpen ? 'translateY(-3px) rotate(-45deg)' : 'none' }}
+          />
+        </button>
+      </motion.header>
+
+      <MobileMenuPanel open={menuOpen} onClose={() => setMenuOpen(false)} links={NAV_LINKS} />
+    </>
   )
 }
