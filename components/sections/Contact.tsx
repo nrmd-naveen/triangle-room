@@ -56,7 +56,7 @@ export default function Contact({
     >
       {/* Top bar — mirrors WorkScrolly section label pattern */}
       <div
-        className="flex items-center justify-between px-8 md:px-16 lg:px-20 border-b border-edge shrink-0"
+        className="flex items-center justify-between px-5 md:px-16 lg:px-20 border-b border-edge shrink-0"
         style={{ height: '54px' }}
       >
         <div className="flex items-center gap-3">
@@ -67,7 +67,7 @@ export default function Contact({
       </div>
 
       {/* Main content — vertically centered in remaining space */}
-      <div className="flex-1 flex flex-col justify-center px-8 md:px-16 lg:px-20 py-20">
+      <div className="flex-1 flex flex-col justify-center px-6 md:px-16 lg:px-20 py-16 md:py-20">
 
         <p className="font-mono text-[9.5px] tracking-[0.42em] uppercase text-fg/25 mb-12">
           Start a conversation

@@ -75,7 +75,45 @@ export default function DirectorsDeck({ directors: directorsProp }: { directors?
   const stickyRef  = useRef<HTMLDivElement>(null)
   const photosRef  = useRef<HTMLDivElement>(null)
   const cardRefs   = useRef<(HTMLDivElement | null)[]>(DIRECTORS.map(() => null))
+  const mobileRef  = useRef<HTMLElement>(null)
 
+  // ── Mobile: scrub-driven card entries ──────────────────────────────────────
+  useGSAP(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile       = window.innerWidth < 768
+    if (!isMobile || prefersReduced) return
+
+    const rows = mobileRef.current?.querySelectorAll<HTMLElement>('.director-mobile-row')
+    if (!rows?.length) return
+
+    // Each row enters like a card being dealt: from right, slight rotation, settles
+    const ENTRY_OFFSETS = [
+      { x: 48, rotation:  3.5 },
+      { x: -42, rotation: -3 },
+      { x: 44,  rotation:  2.8 },
+    ]
+
+    rows.forEach((row, i) => {
+      const off = ENTRY_OFFSETS[i] ?? { x: 36, rotation: 2 }
+      gsap.set(row, { opacity: 0, x: off.x, rotation: off.rotation, transformOrigin: 'left center' })
+
+      gsap.to(row, {
+        opacity:  1,
+        x:        0,
+        rotation: 0,
+        duration: 0.9,
+        ease:     'power3.out',
+        scrollTrigger: {
+          trigger: row,
+          start:   'top 90%',
+          end:     'top 55%',
+          scrub:   0.9,
+        },
+      })
+    })
+  }, { scope: mobileRef })
+
+  // ── Desktop: card scatter animation ───────────────────────────────────────
   useGSAP(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const isMobile       = window.innerWidth < 768
@@ -139,25 +177,28 @@ export default function DirectorsDeck({ directors: directorsProp }: { directors?
   return (
     <div id="directors">
       {/* ── Mobile layout ─────────────────────────────────────────────────── */}
-      <section className="block md:hidden bg-ink px-6 py-24">
+      <section ref={mobileRef} className="block md:hidden bg-ink px-5 py-20">
         {/* Label */}
         <p className="font-mono text-[9px] tracking-[0.42em] uppercase mb-3"
-           style={{ color: 'rgba(243,244,240,0.25)' }}>
+           style={{ color: 'rgba(243,244,240,0.22)' }}>
           The three directors
         </p>
         <h2
-          className="font-display leading-[1.0] tracking-[-0.025em] mb-14"
-          style={{ fontSize: 'clamp(2.4rem, 10vw, 3.6rem)', fontWeight: 300, color: 'rgba(243,244,240,0.88)' }}
+          className="font-display leading-[1.0] tracking-[-0.025em] mb-12"
+          style={{ fontSize: 'clamp(2.2rem, 9vw, 3.2rem)', fontWeight: 300, color: 'rgba(243,244,240,0.88)' }}
         >
           Three makers,<br />one room.
         </h2>
 
-        <div className="flex flex-col gap-10">
+        {/* Hairline */}
+        <div className="mb-10 h-px" style={{ background: 'rgba(243,244,240,0.07)' }} />
+
+        <div className="flex flex-col gap-0 divide-y" style={{ borderColor: 'rgba(243,244,240,0.07)' }}>
           {DIRECTORS.map((d) => (
-            <div key={d.name} className="flex gap-5 items-start">
+            <div key={d.name} className="director-mobile-row flex gap-5 items-start py-8 will-change-transform">
               <div
                 className="flex-none overflow-hidden"
-                style={{ width: 80, height: 106, borderRadius: 3, background: '#1C1F1B' }}
+                style={{ width: 72, height: 96, borderRadius: 2, background: '#1C1F1B' }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -168,17 +209,17 @@ export default function DirectorsDeck({ directors: directorsProp }: { directors?
                 />
               </div>
 
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="font-display leading-tight mb-1"
-                   style={{ fontWeight: 400, fontSize: '1rem', letterSpacing: '-0.01em', color: '#F3F4F0' }}>
+                   style={{ fontWeight: 400, fontSize: '0.98rem', letterSpacing: '-0.01em', color: '#F3F4F0' }}>
                   {d.name}
                 </p>
-                <p className="font-mono text-[8px] tracking-[0.3em] uppercase mb-3"
-                   style={{ color: 'var(--color-green)' }}>
+                <p className="font-mono text-[8px] tracking-[0.28em] uppercase mb-3"
+                   style={{ color: 'var(--color-accent)' }}>
                   {d.role}
                 </p>
-                <p className="font-sans leading-[1.65]"
-                   style={{ fontSize: '0.75rem', color: 'rgba(243,244,240,0.42)' }}>
+                <p className="font-sans leading-[1.7]"
+                   style={{ fontSize: '0.75rem', color: 'rgba(243,244,240,0.38)' }}>
                   {d.note}
                 </p>
               </div>

@@ -59,7 +59,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     >
       <div
         ref={wordRef}
-        className="absolute top-8 left-8 font-mono text-[11px] tracking-[0.35em] uppercase text-fg/40"
+        className="absolute top-6 left-6 md:top-8 md:left-8 font-mono text-[11px] tracking-[0.35em] uppercase text-fg/40"
       >
         Triangle Room
       </div>

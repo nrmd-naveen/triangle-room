@@ -42,7 +42,7 @@ export default function Statement() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center px-8 md:px-12 py-32"
+      className="relative min-h-screen flex items-center px-6 md:px-12 py-24 md:py-32"
       style={{ background: '#F3F4F0' }}
     >
       {/* Corner details */}
@@ -69,7 +69,7 @@ export default function Statement() {
         {/* Statement */}
         <p
           className="font-display leading-[1.28] tracking-[-0.025em]"
-          style={{ fontSize: 'clamp(2.2rem, 4.2vw, 4.2rem)', fontWeight: 300 }}
+          style={{ fontSize: 'clamp(1.7rem, 4.2vw, 4.2rem)', fontWeight: 300 }}
         >
           {STATEMENT.split(' ').map((word, i) => (
             <span key={i} className="stmt-word inline-block mr-[0.28em]">

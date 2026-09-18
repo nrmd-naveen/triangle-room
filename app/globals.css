@@ -20,12 +20,15 @@
 }
 
 @layer base {
-  /* Hide the native cursor on site pages only.
+  /* Hide the native cursor on non-touch site pages only.
+     Touch devices keep the default cursor (custom cursor doesn't apply there).
      The admin sets [data-admin] on <html> which disables this rule. */
-  html:not([data-admin]) *,
-  html:not([data-admin]) *::before,
-  html:not([data-admin]) *::after {
-    cursor: none !important;
+  @media (pointer: fine) {
+    html:not([data-admin]) *,
+    html:not([data-admin]) *::before,
+    html:not([data-admin]) *::after {
+      cursor: none !important;
+    }
   }
 
   html {
@@ -74,6 +77,16 @@
   80%  { transform: translate(-12%, 0%) }
   90%  { transform: translate( 8%,  4%) }
   100% { transform: translate(0, 0) }
+}
+
+/* ─── Reel puzzle: shorter scroll on mobile to reduce fatigue ────────────── */
+.reel-puzzle-scroll {
+  height: 300vh;
+}
+@media (max-width: 767px) {
+  .reel-puzzle-scroll {
+    height: 180vh;
+  }
 }
 
 /* ─── Marquee ────────────────────────────────────────────────────────────── */

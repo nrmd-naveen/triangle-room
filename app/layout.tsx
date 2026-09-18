@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, DM_Sans, JetBrains_Mono, Syne } from 'next/font/google'
 import './globals.css'
 import SmoothScroll from '@/components/SmoothScroll'
@@ -30,6 +30,12 @@ const syne = Syne({
   variable: '--font-syne-next',
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
 
 export const metadata: Metadata = {
   title: 'Triangle Room',

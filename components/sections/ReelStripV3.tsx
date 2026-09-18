@@ -116,7 +116,7 @@ export default function ReelStripV3({ images }: { images?: ReelStripImages }) {
       `}</style>
 
       {/* Section label + headline */}
-      <div className="relative z-10 text-center mb-16 px-6">
+      <div className="relative z-10 text-center mb-10 md:mb-16 px-6">
         <p
           className="font-mono text-[#F5F4F0]/25 mb-5"
           style={{ fontSize: 10, letterSpacing: '0.42em', textTransform: 'uppercase' }}
@@ -126,7 +126,7 @@ export default function ReelStripV3({ images }: { images?: ReelStripImages }) {
         <h2
           className="font-display text-[#F5F4F0]"
           style={{
-            fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)',
+            fontSize: 'clamp(1.8rem, 4.5vw, 3.8rem)',
             fontWeight: 300,
             letterSpacing: '-0.025em',
           }}

@@ -94,10 +94,10 @@ export default function ReelPuzzle({
     // without breaking sticky positioning (unlike overflow:hidden)
     <div
       ref={wrapRef}
-      className="relative bg-ink"
-      style={{ height: '300vh', overflowX: 'clip' }}
+      className="relative bg-ink reel-puzzle-scroll"
+      style={{ overflowX: 'clip' }}
     >
-      <div className="sticky top-0 h-screen flex items-center justify-center">
+      <div className="sticky top-0 flex items-center justify-center" style={{ height: '100svh' }}>
 
         {/* Corner meta-labels */}
         <div className="absolute top-8 left-8 z-20 pointer-events-none select-none">
@@ -112,17 +112,16 @@ export default function ReelPuzzle({
         </div>
 
         {/* ── Puzzle + video container ─────────────────────────────── */}
-        <div className="relative flex h-auto w-full items-start justify-center px-[4.10vw]">
+        <div className="relative flex h-auto w-full items-start justify-center px-[3vw] md:px-[4.10vw]">
           {/*
             perspective is set here so all child tiles share the same
             vanishing point. transformStyle: preserve-3d passes it through
             to the nested grid + individual tiles.
           */}
           <div
-            className="relative w-full"
+            className="relative w-full max-w-[94vw] md:max-w-[69.4vw]"
             style={{
               aspectRatio:    '1.784 / 1',
-              maxWidth:       '69.4vw',
               perspective:    '1200px',
               transformStyle: 'preserve-3d',
             }}

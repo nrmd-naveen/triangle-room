@@ -34,7 +34,7 @@ export default function HeroV1({ isLoaded }: Props) {
       // Mist layer: triangle clip → full viewport on scroll
       gsap.fromTo(
         mistClipRef.current,
-        { clipPath: 'polygon(50% 6%, 5% 93%, 95% 93%)' },
+        { clipPath: 'polygon(50% 5%, 8% 90%, 92% 90%)' },
         {
           clipPath: 'polygon(50% -90%, -140% 230%, 240% 230%)',
           ease: 'none',
@@ -46,20 +46,6 @@ export default function HeroV1({ isLoaded }: Props) {
           },
         }
       )
-
-      // Triangle stroke: swells outward and dissolves as clip opens
-      gsap.to('.v1-stroke-svg', {
-        scale: 3.2,
-        opacity: 0,
-        transformOrigin: '50% 49%',
-        ease: 'power1.in',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: '52% top',
-          scrub: 1.5,
-        },
-      })
 
       // Headline slow parallax
       gsap.to('.v1-headline', {
@@ -96,7 +82,7 @@ export default function HeroV1({ isLoaded }: Props) {
       return
     }
 
-    // Draw the triangle stroke: bottom-left → apex → bottom-right → close
+    // Draw the triangle stroke
     gsap.fromTo(
       '.v1-tri-path',
       { strokeDashoffset: 300 },
@@ -128,85 +114,69 @@ export default function HeroV1({ isLoaded }: Props) {
       <div
         ref={mistClipRef}
         className="absolute inset-0 pointer-events-none"
-        style={{ clipPath: 'polygon(50% 6%, 5% 93%, 95% 93%)' }}
+        style={{ clipPath: 'polygon(50% 5%, 8% 90%, 92% 90%)' }}
         aria-hidden
       >
         {/* Primary cool-blue mist pool */}
         <div style={{
           position: 'absolute',
-          width: '72vw',
-          height: '72vw',
-          left: '14vw',
-          top: '10vh',
-          background: 'radial-gradient(circle, rgba(148,172,198,0.54) 0%, rgba(178,196,214,0.26) 38%, transparent 66%)',
-          filter: 'blur(60px)',
+          width: '68vw',
+          height: '68vw',
+          left: '16vw',
+          top: '8vh',
+          background: 'radial-gradient(circle, rgba(148,172,198,0.52) 0%, rgba(178,196,214,0.22) 38%, transparent 66%)',
+          filter: 'blur(52px)',
         }} />
         {/* Warm-grey secondary bloom */}
         <div style={{
           position: 'absolute',
-          width: '50vw',
-          height: '50vw',
-          right: '8vw',
-          top: '18vh',
-          background: 'radial-gradient(circle, rgba(200,210,220,0.34) 0%, transparent 62%)',
-          filter: 'blur(80px)',
+          width: '44vw',
+          height: '44vw',
+          right: '10vw',
+          top: '20vh',
+          background: 'radial-gradient(circle, rgba(200,210,220,0.28) 0%, transparent 62%)',
+          filter: 'blur(70px)',
         }} />
-        {/* Faint inner tint — separates triangle zone from outside */}
+        {/* Faint inner tint */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(185,198,214,0.07)',
+          background: 'rgba(185,198,214,0.06)',
         }} />
       </div>
 
-      {/* ── Triangle hairline stroke ─────────────────────────────────────────── */}
-      {/* Scales outward and fades as the clip expands on scroll */}
-      {/* <svg
-        className="v1-stroke-svg absolute pointer-events-none"
-        viewBox="0 0 100 88"
-        style={{
-          width: '82vw',
-          left: '9vw',
-          top: '8vh',
-          height: 'auto',
-          opacity: 0.15,
-        }}
-        aria-hidden
-      >
-        <path
-          className="v1-tri-path"
-          d="M 50,2 L 97,86 L 3,86 Z"
-          fill="none"
-          stroke="#0D0D0B"
-          strokeWidth="0.38"
-          strokeDasharray="300"
-          strokeDashoffset="300"
-          pathLength="300"
-        />
-      </svg> */}
 
-      {/* ── Corner details ───────────────────────────────────────────────────── */}
-      <div className="absolute top-6 right-8 font-mono text-[9px] tracking-[0.38em] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.18)' }} aria-hidden>
+      {/* ── Corner "01" — desktop only (conflicts with hamburger on mobile) ────── */}
+      <div className="hidden md:block absolute top-6 right-8 font-mono text-[9px] tracking-[0.38em] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.18)' }} aria-hidden>
         01
       </div>
-      <div className="absolute bottom-14 left-8 font-mono text-[11px] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.13)' }} aria-hidden>×</div>
-      <div className="absolute bottom-14 right-8 font-mono text-[11px] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.13)' }} aria-hidden>×</div>
+      <div className="absolute bottom-14 left-6 md:left-8 font-mono text-[11px] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.13)' }} aria-hidden>×</div>
+      <div className="hidden md:block absolute bottom-14 right-8 font-mono text-[11px] pointer-events-none select-none" style={{ color: 'rgba(13,13,11,0.13)' }} aria-hidden>×</div>
 
-      {/* ── Top bar ─────────────────────────────────────────────────────────── */}
-      <div className="v1-ui relative z-10 flex items-center justify-between px-8 md:px-12 pt-24">
-        <span className="font-mono text-[10px] tracking-[0.38em] uppercase" style={{ color: 'rgba(118,118,113,0.5)' }}>
-          Independent production house
-        </span>
-        <span className="font-mono text-[10px] tracking-[0.38em] uppercase" style={{ color: 'rgba(118,118,113,0.5)' }}>
-          Trivandrum, Kerala
-        </span>
+      {/* ── Top bar — desktop: both labels / mobile: single concise label ─────── */}
+      <div className="v1-ui relative z-10 px-6 md:px-12 pt-20 md:pt-24">
+        {/* Desktop: two labels across the width */}
+        <div className="hidden md:flex items-center justify-between">
+          <span className="font-mono text-[10px] tracking-[0.38em] uppercase" style={{ color: 'rgba(118,118,113,0.5)' }}>
+            Independent production house
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.38em] uppercase" style={{ color: 'rgba(118,118,113,0.5)' }}>
+            Trivandrum, Kerala
+          </span>
+        </div>
+        {/* Mobile: single clean label */}
+        <div className="flex md:hidden">
+          <span className="font-mono text-[9px] tracking-[0.3em] uppercase" style={{ color: 'rgba(118,118,113,0.42)' }}>
+            Trivandrum · Kerala
+          </span>
+        </div>
       </div>
 
       {/* ── Main headline ───────────────────────────────────────────────────── */}
       <div className="v1-headline relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <h1
           className="text-ink leading-[0.88] tracking-[-0.03em]"
-          style={{ fontSize: 'clamp(5rem, 15vw, 13rem)', fontFamily: "var(--font-syne-next, 'Syne', sans-serif)" }}
+          style={{ fontSize: 'clamp(3.4rem, 15vw, 13rem)', fontFamily: "var(--font-syne-next, 'Syne', sans-serif)" }}
         >
           <div className="overflow-hidden">
             <span className="v1-line-1 block" style={{ fontWeight: 700 }}>
@@ -238,28 +208,43 @@ export default function HeroV1({ isLoaded }: Props) {
             </span>
           </div>
         </h1>
+
+        {/* Subtext — clamp ensures legible size on mobile */}
         <p
-          className="v1-sub font-mono text-muted mt-10"
-          style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.8rem)', letterSpacing: '0.22em', textTransform: 'uppercase' }}
+          className="v1-sub font-mono text-muted mt-8 md:mt-10"
+          style={{ fontSize: 'clamp(0.62rem, 2.8vw, 0.78rem)', letterSpacing: '0.22em', textTransform: 'uppercase' }}
         >
           New company.&ensp;Not new at this.
         </p>
       </div>
 
       {/* ── Bottom bar ──────────────────────────────────────────────────────── */}
-      <div className="v1-ui relative z-10 px-8 md:px-12 pb-10 flex items-end justify-between">
-        <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+      <div className="v1-ui relative z-10 px-6 md:px-12 pb-10 flex items-end justify-between">
+
+        {/* Desktop: full discipline list */}
+        <div className="hidden md:flex flex-wrap gap-x-5 gap-y-1.5">
           {DISCIPLINES.map((d) => (
             <span key={d} className="font-mono text-[9.5px] tracking-[0.28em] uppercase" style={{ color: 'rgba(118,118,113,0.4)' }}>
               {d}
             </span>
           ))}
         </div>
+
+        {/* Mobile: condensed discipline row */}
+        <div className="flex md:hidden flex-wrap gap-x-4 gap-y-1">
+          {DISCIPLINES.slice(0, 5).map((d) => (
+            <span key={d} className="font-mono text-[8px] tracking-[0.2em] uppercase" style={{ color: 'rgba(118,118,113,0.32)' }}>
+              {d}
+            </span>
+          ))}
+        </div>
+
+        {/* Scroll indicator */}
         <div className="flex flex-col items-center gap-2">
-          <div className="relative w-px h-12 overflow-hidden" style={{ background: 'rgba(13,13,11,0.1)' }}>
+          <div className="relative w-px h-10 md:h-12 overflow-hidden" style={{ background: 'rgba(13,13,11,0.1)' }}>
             <div className="absolute top-0 left-0 w-full h-1/2" style={{ background: 'rgba(13,13,11,0.22)', animation: 'v1ScrollLine 2s ease-in-out infinite' }} />
           </div>
-          <span className="font-mono text-[8.5px] tracking-[0.3em] uppercase" style={{ color: 'rgba(118,118,113,0.35)' }}>Scroll</span>
+          <span className="font-mono text-[8px] tracking-[0.28em] uppercase" style={{ color: 'rgba(118,118,113,0.32)' }}>Scroll</span>
         </div>
       </div>
 

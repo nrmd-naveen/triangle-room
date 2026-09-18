@@ -50,8 +50,8 @@ const EDGE_MASK =
   'linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 94%, transparent 100%)'
 
 const LOGO_STYLE: React.CSSProperties = {
-  width:          'clamp(110px, 12vw, 160px)',
-  height:         'clamp(44px, 5vw, 64px)',
+  width:          'clamp(140px, 15vw, 200px)',
+  height:         'clamp(56px, 6.5vw, 84px)',
   objectFit:      'contain',
   objectPosition: 'center',
   flexShrink:     0,
@@ -133,7 +133,7 @@ export default function ClientsV1({
       </div>
 
       <div
-        className="space-y-10"
+        className="space-y-12"
         style={{ maskImage: EDGE_MASK, WebkitMaskImage: EDGE_MASK }}
       >
         {ROWS.map(({ logos }, i) => (
@@ -141,7 +141,7 @@ export default function ClientsV1({
             key={i}
             ref={rowRefs[i]}
             className="flex items-center whitespace-nowrap will-change-transform"
-            style={{ gap: 'clamp(3rem, 6vw, 8rem)' }}
+            style={{ gap: 'clamp(3.5rem, 7vw, 9.5rem)' }}
           >
             {logos.map((logo, j) => (
               <img
