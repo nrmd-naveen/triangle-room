@@ -18,9 +18,11 @@ const NAV_LINKS = [
 
 interface NavProps {
   isLoaded: boolean
+  /** Skip the scroll-based dark/light detection and always use the dark (light-on-ink) treatment — for pages that are dark top to bottom. */
+  forceDark?: boolean
 }
 
-export default function Nav({ isLoaded }: NavProps) {
+export default function Nav({ isLoaded, forceDark = false }: NavProps) {
   const [onDark, setOnDark] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -38,7 +40,7 @@ export default function Nav({ isLoaded }: NavProps) {
   // start/end scroll positions instead of relying on bounding rects or
   // ScrollTrigger callbacks (both unreliable for pinned elements).
   useEffect(() => {
-    if (!isLoaded) return
+    if (!isLoaded || forceDark) return
 
     const update = () => {
       // Actual rendered height, since the bar is ~68px on mobile/tablet
@@ -67,14 +69,16 @@ export default function Nav({ isLoaded }: NavProps) {
     window.addEventListener('scroll', update, { passive: true })
     update() // run once on mount so initial state is correct
     return () => window.removeEventListener('scroll', update)
-  }, [isLoaded])
+  }, [isLoaded, forceDark])
+
+  const dark = forceDark || onDark
 
   // The mobile overlay always sits on a dark panel, so force the light
   // logo/hamburger treatment while it's open regardless of scroll position.
-  const showLight  = onDark || menuOpen
-  const linkColor  = onDark ? 'text-fg/40 hover:text-fg' : 'text-muted hover:text-ink'
+  const showLight  = dark || menuOpen
+  const linkColor  = dark ? 'text-fg/40 hover:text-fg' : 'text-muted hover:text-ink'
   const lineColor  = menuOpen ? 'bg-fg' : showLight ? 'bg-fg/80' : 'bg-ink/80'
-  const bgClass    = scrolled && !onDark
+  const bgClass    = scrolled && !dark
     ? 'bg-bg/90 backdrop-blur-md border-b border-border'
     : 'bg-transparent'
 

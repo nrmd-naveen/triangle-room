@@ -17,6 +17,7 @@
 //
 // ────────────────────────────────────────────────────────────────────────────
 
+import Nav from '@/components/Nav'
 import WorksFeatured from '@/components/works/WorksFeatured'
 import WorksV4 from '@/components/works/WorksV4'
 
@@ -28,6 +29,7 @@ export const metadata = {
 export default function WorksPage() {
   return (
     <>
+      <Nav isLoaded forceDark />
       <WorksFeatured />
       {/* <WorksV4 /> */}
     </>
