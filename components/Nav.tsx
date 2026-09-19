@@ -1,12 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
 import MobileMenuPanel from './MobileMenuPanel'
-
-gsap.registerPlugin(ScrollTrigger)
+import BrandMark from './BrandMark'
+import { useOnDarkSection } from '@/lib/useOnDarkSection'
 
 const ease: [number, number, number, number] = [0.25, 0.46, 0.45, 0.94]
 
@@ -20,13 +18,14 @@ interface NavProps {
   isLoaded: boolean
   /** Skip the scroll-based dark/light detection and always use the dark (light-on-ink) treatment — for pages that are dark top to bottom. */
   forceDark?: boolean
+  /** Skip rendering the brand mark here — for the home page, where it's animated in from the preloader and docks into this slot itself. */
+  renderMark?: boolean
 }
 
-export default function Nav({ isLoaded, forceDark = false }: NavProps) {
-  const [onDark, setOnDark] = useState(false)
+export default function Nav({ isLoaded, forceDark = false, renderMark = true }: NavProps) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const headerRef = useRef<HTMLElement>(null)
+  const dark = useOnDarkSection(isLoaded, forceDark)
 
   // Track scroll depth for bg
   useEffect(() => {
@@ -34,44 +33,6 @@ export default function Nav({ isLoaded, forceDark = false }: NavProps) {
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
-
-  // Flip text colour when nav overlaps dark sections.
-  // #work is GSAP-pinned so we compare window.scrollY against the pin trigger's
-  // start/end scroll positions instead of relying on bounding rects or
-  // ScrollTrigger callbacks (both unreliable for pinned elements).
-  useEffect(() => {
-    if (!isLoaded || forceDark) return
-
-    const update = () => {
-      // Actual rendered height, since the bar is ~68px on mobile/tablet
-      // and 90px from the lg breakpoint up.
-      const navH = headerRef.current?.offsetHeight ?? 90
-
-      // ── #directors: dark section before work (bounding rect) ────────────
-      const directorsEl = document.querySelector<HTMLElement>('#directors')
-      const inDirectors = !!directorsEl && (() => {
-        const r = directorsEl.getBoundingClientRect()
-        return r.top <= navH && r.bottom > navH
-      })()
-
-      // ── From #work onwards: no light sections follow, stay dark ──────────
-      const workEl = document.querySelector<HTMLElement>('#work')
-      let pastWorkStart = false
-      if (workEl) {
-        const pinST = ScrollTrigger.getAll().find((st) => st.trigger === workEl)
-        const workStart = pinST ? pinST.start : workEl.offsetTop
-        pastWorkStart = window.scrollY >= workStart - navH
-      }
-
-      setOnDark(inDirectors || pastWorkStart)
-    }
-
-    window.addEventListener('scroll', update, { passive: true })
-    update() // run once on mount so initial state is correct
-    return () => window.removeEventListener('scroll', update)
-  }, [isLoaded, forceDark])
-
-  const dark = forceDark || onDark
 
   // The mobile overlay always sits on a dark panel, so force the light
   // logo/hamburger treatment while it's open regardless of scroll position.
@@ -85,31 +46,16 @@ export default function Nav({ isLoaded, forceDark = false }: NavProps) {
   return (
     <>
       <motion.header
-        ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 lg:px-10 py-4 lg:py-0 transition-colors duration-500 ${bgClass}`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 transition-colors duration-500 ${bgClass}`}
         initial={{ opacity: 0, y: -16 }}
         animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
         transition={{ duration: 0.9, ease }}
       >
-        <a
-          href="/"
-          className="relative block h-9 sm:h-11 lg:h-[90px] aspect-[5.17] shrink-0"
-          aria-label="Triangle Room — home"
-          onClick={() => setMenuOpen(false)}
-        >
-          <img
-            src="/brand/wordmark-black.svg"
-            alt=""
-            className="absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-500"
-            style={{ opacity: showLight ? 0 : 0.8 }}
-          />
-          <img
-            src="/brand/wordmark-white.svg"
-            alt="Triangle Room"
-            className="absolute inset-0 h-full w-full object-contain object-left transition-opacity duration-500"
-            style={{ opacity: showLight ? 0.8 : 0 }}
-          />
-        </a>
+        {/* Reserves the brand mark's footprint so the links/hamburger stay put — the
+            mark itself is fixed-positioned (see BrandMark) so it can dock into this
+            exact spot from the preloader animation without being clipped by the header. */}
+        <span aria-hidden className="block h-9 sm:h-10 lg:h-14 w-[70px] sm:w-[80px] lg:w-[110px] shrink-0" />
+        {renderMark && <BrandMark mode="docked" dark={dark} onClick={() => setMenuOpen(false)} />}
 
         <nav className="hidden lg:flex items-center gap-16">
           {NAV_LINKS.map(({ label, href }) => (

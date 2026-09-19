@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import Wordmark from '@/components/LogoWordmark'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -78,7 +79,7 @@ export default function HeroV1({ isLoaded }: Props) {
     if (!isLoaded) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) {
-      gsap.set(['.v1-line-1', '.v1-line-2', '.v1-sub', '.v1-ui'], { clearProps: 'all' })
+      gsap.set(['.v1-word-svg', '.v1-gleam-rect', '.v1-sub', '.v1-ui'], { clearProps: 'all' })
       return
     }
 
@@ -89,19 +90,44 @@ export default function HeroV1({ isLoaded }: Props) {
       { strokeDashoffset: 0, duration: 2.0, ease: 'power3.out', delay: 0.1 }
     )
 
-    // Text entrance (lines masked by overflow-hidden parents)
-    gsap.set(['.v1-line-1', '.v1-line-2'], { yPercent: 110 })
+    // Wordmark entrance — each word clips in left-to-right, like an edit
+    // holding before cutting to reveal the next frame. The reveal is a clip
+    // on the glyphs themselves (not an opaque cover panel), so the misty
+    // backdrop is never blocked or colour-mismatched behind it. Paced
+    // deliberately (each word gets its own unhurried beat) rather than a
+    // quick UI-style stagger.
+    gsap.set('.v1-word-svg', { clipPath: 'inset(0% 100% 0% 0%)' })
+    gsap.set('.v1-gleam-rect', { xPercent: -140, opacity: 0 })
     gsap.set(['.v1-sub', '.v1-ui'], { opacity: 0, y: 18 })
 
-    gsap.timeline({ delay: 0.25 })
-      .to(['.v1-line-1', '.v1-line-2'], {
-        yPercent: 0,
-        duration: 1.35,
-        ease: 'power4.out',
-        stagger: 0.1,
-      })
-      .to('.v1-sub', { opacity: 1, y: 0, duration: 0.95, ease: 'power3.out' }, '-=0.8')
-      .to('.v1-ui', { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out', stagger: 0.05 }, '-=0.65')
+    const WIPE_DURATION = 2.1
+    const WORD_HOLD = 0.85 // pause before the next word begins its own reveal
+    const GLEAM_DURATION = 2.6
+
+    const tl = gsap.timeline({ delay: 0.5 })
+
+    ;['.v1-word-triangle', '.v1-word-room'].forEach((word, i) => {
+      tl.to(`${word} .v1-word-svg`, { clipPath: 'inset(0% 0% 0% 0%)', duration: WIPE_DURATION, ease: 'power2.inOut' }, i * WORD_HOLD)
+    })
+
+    const wordsEnd = WORD_HOLD + WIPE_DURATION // both words fully revealed by here
+
+    // A single shine, driven by tweens shared across both words' rects, so it
+    // reads as one beam passing over the whole lockup rather than two
+    // separate sweeps. It only starts once both words have fully landed. The
+    // sweep itself is one continuous ease (never re-accelerates mid-flight —
+    // splitting position across keyframes caused it to visibly stutter), while
+    // opacity fades in and back out on its own, independent arc.
+    const gleamStart = wordsEnd + 0.4
+    tl.to('.v1-gleam-rect', { xPercent: 140, duration: GLEAM_DURATION, ease: 'sine.inOut' }, gleamStart)
+      .to('.v1-gleam-rect', {
+        keyframes: { opacity: [0, 1, 1, 0] },
+        duration: GLEAM_DURATION,
+        ease: 'sine.inOut',
+      }, gleamStart)
+
+    tl.to('.v1-sub', { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }, wordsEnd - 0.5)
+      .to('.v1-ui', { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out', stagger: 0.08 }, '-=0.9')
   }, { dependencies: [isLoaded], scope: containerRef })
 
   return (
@@ -174,38 +200,22 @@ export default function HeroV1({ isLoaded }: Props) {
 
       {/* ── Main headline ───────────────────────────────────────────────────── */}
       <div className="v1-headline relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
-        <h1
-          className="text-ink leading-[0.88] tracking-[-0.03em]"
-          style={{ fontSize: 'clamp(3.4rem, 15vw, 13rem)', fontFamily: "var(--font-syne-next, 'Syne', sans-serif)" }}
-        >
-          <div className="overflow-hidden">
-            <span className="v1-line-1 block" style={{ fontWeight: 700 }}>
-              Tr
-              {/* Custom "i" glyph — rectangular stem + triangle on top */}
-              <svg
-                aria-hidden
-                viewBox="0 0 28 78"
-                style={{
-                  display: 'inline-block',
-                  height: '0.76em',
-                  width: '0.32em',
-                  verticalAlign: 'baseline',
-                  marginLeft: '0.02em',
-                  marginRight: '0.02em',
-                }}
-              >
-                {/* Triangle dot — full width, at top */}
-                <polygon points="16,0 30,22 2,22" fill="#0D0D0B" />
-                {/* Stem reaching the baseline */}
-                <rect x="9" y="28" width="13.5" height="50" fill="#0D0D0B" />
-              </svg>
-              angle
-            </span>
+        <h1 aria-label="Triangle Room" className="leading-[0.88] flex flex-col items-center">
+          <div className="v1-word-triangle relative overflow-hidden flex justify-center w-full" style={{ color: '#0D0D0B' }}>
+            <Wordmark
+              word="triangle"
+              shine
+              className="v1-word-svg block"
+              style={{ height: 'clamp(2.5rem, 10.8vw, 9.4rem)', clipPath: 'inset(0% 100% 0% 0%)' }}
+            />
           </div>
-          <div className="overflow-hidden">
-            <span className="v1-line-2 block" style={{ color: 'rgba(13,13,11,0.24)', fontWeight: 600 }}>
-              Room
-            </span>
+          <div className="v1-word-room relative overflow-hidden flex justify-center w-full mt-1 md:mt-2" style={{ color: 'rgba(13,13,11,0.24)' }}>
+            <Wordmark
+              word="room"
+              shine
+              className="v1-word-svg block"
+              style={{ height: 'clamp(2.5rem, 10.8vw, 9.4rem)', clipPath: 'inset(0% 100% 0% 0%)' }}
+            />
           </div>
         </h1>
 
